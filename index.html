@@ -11,11 +11,11 @@
     --ink: #1a1209; --paper: #fdf8f0; --warm: #f5ede0; --gold: #c8931a;
     --red: #c0392b; --green: #27614a; --blue: #1e4d8c; --muted: #7a6a55;
     --border: #d4c4a8; --easy: #27614a; --medium: #c8931a; --hard: #c0392b;
-    --base-size: 15px; /* 預設基礎字體大小 */
+    --base-size: 24px; /* 預設基礎字體大小 */
   }
 
   /* 開啟投屏模式時，基礎字體變大 */
-  body.proj-mode { --base-size: 24px; }
+  body.proj-mode { --base-size: 40px; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -28,7 +28,7 @@
 
   /* 頂部標題與投屏按鈕 */
   header { background: var(--ink); color: var(--paper); padding: 40px 24px 30px; text-align: center; position: relative; overflow: hidden; }
-  header::before { content: '國'; position: absolute; font-family: 'Noto Serif TC', serif; font-size: 300px; font-weight: 900; color: rgba(255,255,255,0.04); right: -40px; top: -60px; line-height: 1; }
+  header::before { content: '瑞'; position: absolute; font-family: 'Noto Serif TC', serif; font-size: 300px; font-weight: 900; color: rgba(255,255,255,0.04); right: -40px; top: -60px; line-height: 1; }
   .header-label { font-size: 11px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
   header h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(22px, 4vw, 36px); font-weight: 900; letter-spacing: 2px; }
   header p { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 8px; }
