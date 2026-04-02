@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>114四技二專 國文 完整題目檢討</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --ink: #1a1209; --paper: #fdf8f0; --warm: #f5ede0; --gold: #c8931a;
+    --red: #c0392b; --green: #27614a; --blue: #1e4d8c; --muted: #7a6a55;
+    --border: #d4c4a8; --easy: #27614a; --medium: #c8931a; --hard: #c0392b;
+    --base-size: 15px; /* 預設基礎字體大小 */
+  }
+
+  /* 開啟投屏模式時，基礎字體變大 */
+  body.proj-mode { --base-size: 24px; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: var(--base-size); 
+    line-height: 1.8;
+  }
+
+  /* 頂部標題與投屏按鈕 */
+  header { background: var(--ink); color: var(--paper); padding: 40px 24px 30px; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: '國'; position: absolute; font-family: 'Noto Serif TC', serif; font-size: 300px; font-weight: 900; color: rgba(255,255,255,0.04); right: -40px; top: -60px; line-height: 1; }
+  .header-label { font-size: 11px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  header h1 { font-family: 'Noto Serif TC', serif; font-size: clamp(22px, 4vw, 36px); font-weight: 900; letter-spacing: 2px; }
+  header p { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 8px; }
+  .proj-btn { position: absolute; top: 30px; right: 24px; padding: 8px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+  .proj-btn:hover { background: rgba(255,255,255,0.2); }
+  body.proj-mode .proj-btn { background: var(--gold); border-color: var(--gold); }
+
+  /* 頁籤 */
+  .tabs { display: flex; gap: 0; background: var(--ink); padding: 0 24px; overflow-x: auto; border-bottom: 3px solid var(--gold); }
+  .tab-btn { padding: 12px 20px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-family: 'Noto Sans TC', sans-serif; font-size: 13px; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -3px; transition: all 0.2s; }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-btn:hover { color: white; }
+
+  section { display: none; } section.active { display: block; }
+  .container { max-width: 96%; margin: 0 auto; padding: 32px 20px; }
+
+  /* 成績與五標區塊 */
+  .score-section { background: var(--warm); border: 1px solid var(--border); border-radius: 12px; padding: 28px; margin-bottom: 32px; }
+  .score-title { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+  .score-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .five-standards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 28px; }
+  .standard-card { background: white; border-radius: 10px; padding: 14px 10px; text-align: center; border: 2px solid var(--border); transition: transform 0.15s; }
+  .standard-card:hover { transform: translateY(-2px); }
+  .standard-card.highlight { border-color: var(--gold); background: #fffbf0; }
+  .standard-name { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .standard-score { font-family: 'Noto Serif TC', serif; font-size: 28px; font-weight: 900; color: var(--ink); }
+  .standard-pct { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .calc-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .calc-left label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .score-input-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .score-input-wrap input { width: 80px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; text-align: center; background: white; color: var(--ink); outline: none; }
+  .score-input-wrap input:focus { border-color: var(--gold); }
+  .score-help { font-size: 12px; color: var(--muted); }
+  .calc-btn { padding: 10px 24px; background: var(--gold); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: background 0.2s; }
+  .calc-btn:hover { background: #a0740e; }
+  .result-card { background: white; border-radius: 10px; padding: 18px; border: 2px solid var(--border); }
+  .result-rank { font-family: 'Noto Serif TC', serif; font-size: 28px; font-weight: 900; color: var(--ink); }
+  .result-bar { margin-top: 10px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .result-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width 0.6s ease; }
+
+  /* 逐題檢討 - 難易度過濾按鈕 */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-btn { padding: 6px 16px; border-radius: 20px; border: 2px solid var(--border); background: white; cursor: pointer; font-size: 13px; font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s; color: var(--ink); }
+  .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+  .filter-btn:hover { border-color: var(--ink); }
+
+  /* 逐題檢討 - 題目卡片 */
+  .q-card { background: white; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; transition: box-shadow 0.2s; }
+  .q-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .q-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; background: var(--warm); border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  .q-card.open .q-header { border-bottom-color: var(--border); }
+  .q-num { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 900; color: var(--gold); min-width: 36px; }
+  .q-preview { flex: 1; font-size: calc(var(--base-size) * 1.0); color: var(--ink); line-height: 1.5; } 
+  .q-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .q-answer { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 900; color: var(--green); background: rgba(39,97,74,0.1); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .difficulty { font-size: 12px; letter-spacing: 1px; }
+  .diff-easy { color: var(--easy); } .diff-medium { color: var(--medium); } .diff-hard { color: var(--hard); }
+  .q-toggle { width: 24px; height: 24px; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
+  .q-card.open .q-toggle { transform: rotate(180deg); }
+  .q-body { display: none; padding: 20px 24px; }
+  .q-card.open .q-body { display: block; }
+  
+  .q-explain { margin-bottom: 16px; }
+  .explain-title { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .explain-text { font-size: calc(var(--base-size) * 0.95); line-height: 1.9; color: var(--ink); } 
+  .key-point { background: rgba(200,147,26,0.1); border-left: 3px solid var(--gold); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 13px; margin: 12px 0; }
+
+  /* ABCD 選項排版樣式 */
+  .options { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .opt { padding: 8px 12px; background: rgba(0,0,0,0.03); border-radius: 6px; font-size: calc(var(--base-size) * 0.9); }
+  .opt.correct { background: rgba(39,97,74,0.1); border-left: 3px solid var(--green); font-weight: bold; }
+
+  /* 題組整理 - 標籤與膠囊 */
+  .group-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .group-title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 16px; margin-bottom: 10px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .group-tag { font-size: 11px; background: var(--warm); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 10px; }
+  .group-qs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .q-chip { font-size: 13px; background: var(--warm); border: 1px solid var(--border); padding: 3px 10px; border-radius: 16px; cursor: pointer; transition: all 0.15s; }
+  .q-chip:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  /* 題組文章共用區塊樣式 */
+  .passage-box { display: none; margin-bottom: 20px; border: 2px solid var(--gold); background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .passage-box.open { display: block; animation: fadeIn 0.3s ease; }
+  .passage-title { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 12px; border-bottom: 2px dashed var(--border); padding-bottom: 8px; }
+  .an-text { font-size: calc(var(--base-size) * 0.95); line-height: 1.8; color: var(--ink); }
+  .passage-btn { padding: 4px 10px; background: rgba(200,147,26,0.1); border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: auto; transition: all 0.2s; }
+  .passage-btn:hover { background: var(--gold); color: white; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 600px) {
+    .five-standards { grid-template-columns: repeat(3, 1fr); }
+    .calc-area { grid-template-columns: 1fr; }
+    .q-header { flex-wrap: wrap; gap: 8px; padding: 12px 14px; }
+    .q-preview { width: 100%; order: 2; min-width: 0; }
+    .q-num { order: 1; }
+    .q-meta { order: 3; width: 100%; justify-content: flex-end; }
+    .difficulty { font-size: 11px; }
+  }
+
+  /* 題型標籤篩選 */
+  .type-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: rgba(30,77,140,0.1); color: var(--blue); margin: 2px 2px 0 0; }
+
+  /* 題組色條：左側豎線，每組不同色 */
+  .q-card[data-group="1"] { border-left: 4px solid #c8931a; }
+  .q-card[data-group="2"] { border-left: 4px solid #27614a; }
+  .q-card[data-group="3"] { border-left: 4px solid #1e4d8c; }
+  .q-card[data-group="4"] { border-left: 4px solid #8e44ad; }
+  .q-card[data-group="5"] { border-left: 4px solid #d35400; }
+  .q-card[data-group="6"] { border-left: 4px solid #16a085; }
+  .q-card[data-group="7"] { border-left: 4px solid #c0392b; }
+  .q-card[data-group="8"] { border-left: 4px solid #2c3e50; }
+  .q-card[data-group="9"] { border-left: 4px solid #7f8c8d; }
+
+  /* 投屏模式強化：選項更清晰 */
+  body.proj-mode .opt { padding: 10px 16px; font-size: calc(var(--base-size) * 0.9); }
+  body.proj-mode .opt.correct { border-left-width: 5px; font-weight: 900; }
+  body.proj-mode .q-answer { width: 44px; height: 44px; font-size: 22px; }
+
+  /* 詳解清除標記按鈕 */
+  .clean-btn { float: right; padding: 3px 10px; font-size: 11px; background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); color: var(--red); border-radius: 6px; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: all .15s; }
+  .clean-btn:hover { background: var(--red); color: white; }
+
+  /* 班級進度抽屜 */
+  #prog-toggle { position: fixed; bottom: 80px; right: 0; background: var(--ink); color: var(--gold); border: none; border-radius: 12px 0 0 12px; padding: 12px 10px; cursor: pointer; font-size: 12px; writing-mode: vertical-rl; letter-spacing: 2px; z-index: 1000; font-family: 'Noto Serif TC', serif; opacity: 0.6; transition: opacity .2s; }
+  #prog-toggle:hover { opacity: 1; }
+  #prog-drawer { position: fixed; right: -320px; top: 0; bottom: 0; width: 320px; background: white; border-left: 2px solid var(--border); box-shadow: -4px 0 20px rgba(0,0,0,0.12); z-index: 999; transition: right .3s ease; overflow-y: auto; padding: 20px 16px; }
+  #prog-drawer.open { right: 0; }
+  .prog-header { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .prog-sub { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+  .prog-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); padding: 0; }
+  .class-section { margin-bottom: 18px; }
+  .class-name { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+  .prog-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .prog-q { width: 36px; height: 36px; border-radius: 6px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: 'Noto Serif TC', serif; }
+  .prog-q:hover { border-color: var(--gold); color: var(--gold); }
+  .prog-q.done { background: var(--green); border-color: var(--green); color: white; }
+  .prog-q.partial { background: var(--gold); border-color: var(--gold); color: white; }
+  .prog-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .prog-btn { flex: 1; padding: 6px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border); background: white; color: var(--muted); cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: all .15s; }
+  .prog-btn:hover { background: var(--warm); }
+  .prog-note { width: 100%; margin-top: 8px; padding: 8px 10px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Noto Sans TC', sans-serif; resize: none; color: var(--ink); background: var(--warm); }
+  .prog-note:focus { outline: none; border-color: var(--gold); }
+  .prog-legend { display: flex; gap: 10px; font-size: 11px; color: var(--muted); margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+  .leg-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .class-tabs { display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap; }
+  .class-tab { padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1.5px solid var(--border); background: white; color: var(--muted); font-family: 'Noto Sans TC', sans-serif; transition: all .15s; }
+  .class-tab.active { background: var(--ink); color: var(--gold); border-color: var(--ink); font-weight: 700; }
+  body::after { content: '蘇瑞媛老師'; position: fixed; bottom: 32px; right: 28px; font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: rgba(200,147,26,0.35); letter-spacing: 3px; pointer-events: none; z-index: 9999; writing-mode: vertical-rl; text-orientation: mixed; user-select: none; }
+</style>
+<body>
+
+<header>
+  <div class="header-label">114 學年度 · 四技二專統一入學測驗</div>
+  <h1>國文共同科目 完整題目檢討</h1>
+  <p>38 題選擇題 · 公告答案 · 難易分析 · 五標對照</p>
+  <button class="proj-btn" onclick="toggleProjMode()">📽️ 投屏模式</button>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('scores')">五標與成績</button>
+  <button class="tab-btn" onclick="showTab('review')">逐題檢討</button>
+  <button class="tab-btn" onclick="showTab('groups')">題組整理</button>
+</div>
+
+<div class="container">
+
+  <section id="tab-scores" class="active">
+    <div class="score-section">
+      <div class="score-title">🎯 114 年度五標對照表</div>
+      <div class="five-standards">
+        <div class="standard-card highlight"><div class="standard-name">頂標</div><div class="standard-score">70</div><div class="standard-pct">前 12%</div></div>
+        <div class="standard-card"><div class="standard-name">前標</div><div class="standard-score">62</div><div class="standard-pct">前 25%</div></div>
+        <div class="standard-card"><div class="standard-name">均標</div><div class="standard-score">52</div><div class="standard-pct">前 50%</div></div>
+        <div class="standard-card"><div class="standard-name">後標</div><div class="standard-score">40</div><div class="standard-pct">後 25%</div></div>
+        <div class="standard-card"><div class="standard-name">底標</div><div class="standard-score">25</div><div class="standard-pct">後 12%</div></div>
+      </div>
+      <div class="calc-area">
+        <div class="calc-left">
+          <label>請輸入您的答對題數與寫作成績：</label>
+          <div class="score-input-wrap">
+            <input type="number" id="correct-count" placeholder="0" min="0" max="38">
+            <span class="score-help">題 (每題 2 分) ＋</span>
+            <input type="number" id="essay-score" placeholder="0" min="0" max="24">
+            <span class="score-help">分 (寫作)</span>
+            <button class="calc-btn" onclick="calcScore()">計算落點</button>
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="result-rank" id="result-score">-- 分</div>
+          <div id="result-label" style="font-size:14px;color:var(--muted);margin-top:5px;">請輸入成績以計算落點區間</div>
+          <div class="result-bar"><div class="result-fill" id="result-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-review">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterQ('all','diff',this)">全部題目</button>
+      <button class="filter-btn" onclick="filterQ('easy','diff',this)">★ 基礎</button>
+      <button class="filter-btn" onclick="filterQ('medium','diff',this)">★★ 中等</button>
+      <button class="filter-btn" onclick="filterQ('hard','diff',this)">★★★ 進階</button>
+      <span style="width:1px;background:var(--border);display:inline-block;height:20px;margin:0 4px;align-self:center;"></span>
+      <button class="filter-btn" onclick="filterQ('字形辨正','type',this)">字形</button>
+      <button class="filter-btn" onclick="filterQ('成語典故','type',this)">成語典故</button>
+      <button class="filter-btn" onclick="filterQ('古文翻譯','type',this)">古文翻譯</button>
+      <button class="filter-btn" onclick="filterQ('閱讀理解','type',this)">閱讀理解</button>
+      <button class="filter-btn" onclick="filterQ('語氣修辭','type',this)">語氣修辭</button>
+    </div>
+    <div id="fixed-passage-container" class="passage-box"><div id="passage-content"></div></div>
+    <div id="q-list"></div>
+  </section>
+
+  <section id="tab-groups">
+    <div class="group-card">
+      <div class="group-title">閱讀一：賴和〈一桿稱仔〉〈不如意的過年〉<span class="group-tag">第 11–15 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p11-15')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p11-15');goToQ(11)">11. 逞威尋釁辨析</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p11-15');goToQ(12)">12. 畫線詞語解釋</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p11-15');goToQ(13)">13. 敘寫手法</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p11-15');goToQ(14)">14. 諷刺手法特徵</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p11-15');goToQ(15)">15. 心態與批評文句</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀二：古代燈具設計<span class="group-tag">第 16–19 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p16-19')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p16-19');goToQ(16)">16. 構造位置</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p16-19');goToQ(17)">17. 燈具敘述辨析</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p16-19');goToQ(18)">18. 共同設計考量</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p16-19');goToQ(19)">19. 兩項陳述研判</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀三：沈起鳳〈壯夫縛虎〉<span class="group-tag">第 20–23 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p20-23')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p20-23');goToQ(20)">20. 人物形象解讀</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p20-23');goToQ(21)">21. 寫作技巧</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p20-23');goToQ(22)">22. 函牛之鼎意涵</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p20-23');goToQ(23)">23. 遞進手法</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀四：韓國士大夫筆下的岳陽樓<span class="group-tag">第 24–27 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p24-27')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p24-27');goToQ(24)">24. 可確知的事</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p24-27');goToQ(25)">25. 兩種想法的言論</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p24-27');goToQ(26)">26. 李穡二詩典故</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p24-27');goToQ(27)">27. 詞語解釋</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀五：臺灣遠洋漁業<span class="group-tag">第 28–30 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p28-30')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p28-30');goToQ(28)">28. 地圖標記</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p28-30');goToQ(29)">29. 漁業敘述辨析</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p28-30');goToQ(30)">30. 圖表佐證適當性</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀六：客家人的大伯公（蘭芳公司）<span class="group-tag">第 31–35 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p31-35')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p31-35');goToQ(31)">31. 蘭芳公司敘述</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p31-35');goToQ(32)">32. 華人公司敘述</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p31-35');goToQ(33)">33. 共和國論證事例</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p31-35');goToQ(34)">34. 文獻作法理由</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p31-35');goToQ(35)">35. 海錄字詞解釋</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-title">閱讀七：冷鏈物流全日<span class="group-tag">第 36–38 題</span>
+        <button class="passage-btn" onclick="event.stopPropagation();showPassage('p36-38')">📜 查看原文</button>
+      </div>
+      <div class="group-qs">
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p36-38');goToQ(36)">36. 全日物流敘述</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p36-38');goToQ(37)">37. 本業外增加項目</span>
+        <span class="q-chip" onclick="event.stopPropagation();showPassage('p36-38');goToQ(38)">38. 寫作手法意義</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 班級進度抽屜 -->
+<button id="prog-toggle" onclick="toggleDrawer()">班級進度</button>
+<div id="prog-drawer">
+  <div class="prog-header">班級進度記錄<button class="prog-close" onclick="toggleDrawer()">×</button></div>
+  <div class="prog-sub">點題號切換狀態・資料存在瀏覽器</div>
+  <div class="prog-legend">
+    <span class="leg-dot" style="background:var(--green)"></span>已講完
+    <span class="leg-dot" style="background:var(--gold)"></span>講一半
+    <span class="leg-dot" style="background:#e0ddd6;border:1px solid #c8c5be"></span>未講
+  </div>
+  <div class="class-tabs">
+    <button class="class-tab active" onclick="switchClass('建三忠',this)">建三忠</button>
+    <button class="class-tab" onclick="switchClass('建三孝',this)">建三孝</button>
+    <button class="class-tab" onclick="switchClass('冷三忠',this)">冷三忠</button>
+    <button class="class-tab" onclick="switchClass('冷三孝',this)">冷三孝</button>
+  </div>
+  <div class="prog-grid" id="prog-grid"></div>
+  <div class="prog-actions">
+    <button class="prog-btn" onclick="clearClass()">清空本班</button>
+    <button class="prog-btn" onclick="markAllDone()">全部標為完成</button>
+  </div>
+  <textarea class="prog-note" id="prog-note" rows="4" placeholder="本班備注（如：省略第18題、下次從25題繼續）" oninput="saveNote()"></textarea>
+</div>
+
+<script>
+const CLASSES=['建三忠','建三孝','冷三忠','冷三孝'];
+const EXAM_KEY='114統測';
+let currentClass='建三忠';
+const TOTAL_Q=38;
+function storeKey(c){return`prog_${EXAM_KEY}_${c}`;}
+function noteKey(c){return`note_${EXAM_KEY}_${c}`;}
+function loadProgress(c){try{return JSON.parse(localStorage.getItem(storeKey(c))||'{}')}catch(e){return{}}}
+function saveProgress(c,d){localStorage.setItem(storeKey(c),JSON.stringify(d));}
+function switchClass(cls,btn){currentClass=cls;document.querySelectorAll('.class-tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderGrid();document.getElementById('prog-note').value=localStorage.getItem(noteKey(cls))||'';}
+function renderGrid(){const grid=document.getElementById('prog-grid'),data=loadProgress(currentClass);grid.innerHTML='';for(let i=1;i<=TOTAL_Q;i++){const s=data[i]||0,cls=s===1?'done':s===2?'partial':'',btn=document.createElement('button');btn.className=`prog-q ${cls}`;btn.textContent=i;btn.onclick=()=>cycleState(i);grid.appendChild(btn);}}
+function cycleState(n){const d=loadProgress(currentClass);d[n]=((d[n]||0)+1)%3;saveProgress(currentClass,d);renderGrid();}
+function clearClass(){if(!confirm(`確定清空「${currentClass}」的進度？`))return;localStorage.removeItem(storeKey(currentClass));renderGrid();}
+function markAllDone(){const d={};for(let i=1;i<=TOTAL_Q;i++)d[i]=1;saveProgress(currentClass,d);renderGrid();}
+function saveNote(){localStorage.setItem(noteKey(currentClass),document.getElementById('prog-note').value);}
+function toggleDrawer(){document.getElementById('prog-drawer').classList.toggle('open');if(document.getElementById('prog-drawer').classList.contains('open'))renderGrid();}
+
+const groupMap={11:1,12:1,13:1,14:1,15:1,16:2,17:2,18:2,19:2,20:3,21:3,22:3,23:3,24:4,25:4,26:4,27:4,28:5,29:5,30:5,31:6,32:6,33:6,34:6,35:6,36:7,37:7,38:7};
+const typeMap={'字形辨正':['字形','錯別字','字音'],'成語典故':['成語','典故','文學典故'],'古文翻譯':['古文','一字多義','虛詞','白話'],'閱讀理解':['閱讀','文意','題組'],'語氣修辭':['修辭','語氣','句式','諷刺','排列']};
+function normalizeTypes(texts){if(!texts)return[];const r=new Set();texts.forEach(t=>{for(const[cat,keys]of Object.entries(typeMap)){if(keys.some(k=>t.includes(k)))r.add(cat);}r.add(t);});return[...r];}
+
+function showTab(tabId){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+tabId).classList.add('active');const btns=document.querySelectorAll('.tab-btn');if(tabId==='scores')btns[0].classList.add('active');if(tabId==='review')btns[1].classList.add('active');if(tabId==='groups')btns[2].classList.add('active');}
+
+function calcScore(){const correct=parseInt(document.getElementById('correct-count').value)||0,essay=parseInt(document.getElementById('essay-score').value)||0,total=(Math.min(correct,38)*2)+Math.min(essay,24);document.getElementById('result-score').innerText=total+' 分';document.getElementById('result-fill').style.width=total+'%';let label='';if(total>=70)label='🎯 頂標水準（前 12%）';else if(total>=62)label='🟢 前標水準（前 25%）';else if(total>=52)label='🟡 均標水準（50%）';else if(total>=40)label='🟠 後標水準（後 25%）';else if(total>=25)label='🔴 底標水準（後 12%）';else label='💡 需要再加油喔！';document.getElementById('result-label').innerText=label;}
+
+function renderQuestions(filterVal,filterType){const list=document.getElementById('q-list');list.innerHTML='';let filtered;if(!filterVal||filterVal==='all'){filtered=qData;}else if(filterType==='diff'){filtered=qData.filter(q=>q.diff===filterVal);}else{filtered=qData.filter(q=>q.texts&&q.texts.some(t=>t.includes(filterVal)));}
+filtered.forEach(q=>{const card=document.createElement('div');card.className='q-card';card.id='q-'+q.n;if(q.group)card.setAttribute('data-group',q.group);let diffLabel=q.diff==='easy'?'★ 基礎':q.diff==='medium'?'★★ 中等':'★★★ 難';const typeTags=(q.texts||[]).filter(t=>Object.keys(typeMap).includes(t)).map(t=>`<span class="type-tag">${t}</span>`).join('');card.innerHTML=`<div class="q-header" onclick="toggleQ(this)"><div class="q-num">${q.n}</div><div class="q-preview">${q.preview}${typeTags?`<div style="margin-top:6px;">${typeTags}</div>`:''}</div><div class="q-meta"><span class="difficulty diff-${q.diff}">${diffLabel}</span><div class="q-answer">${q.ans}</div><svg class="q-toggle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div></div><div class="q-body"><div class="q-explain"><div class="explain-title">📝 解析 <button class="clean-btn" onclick="cleanRefs(this)">清除 [1] 標記</button></div><div class="explain-text">${q.explain}</div></div><div class="key-point">💡 <strong>複習重點</strong>：${q.keypoint}</div>${q.wrong?`<div class="key-point" style="border-color:var(--red);background:rgba(192,57,43,0.07);">⚠️ <strong>常見錯誤</strong>：${q.wrong}</div>`:''}</div>`;list.appendChild(card);});}
+
+function cleanRefs(btn){const box=btn.closest('.q-explain').querySelector('.explain-text');box.innerHTML=box.innerHTML.replace(/\s*\[\d+\]/g,'');btn.textContent='已清除 ✓';btn.style.color='var(--green)';btn.style.borderColor='var(--green)';btn.disabled=true;}
+function toggleQ(el){el.closest('.q-card').classList.toggle('open');}
+function filterQ(val,type,btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderQuestions(val,type);}
+function goToQ(num){showTab('review');filterQ('all','diff',document.querySelector('.filter-btn'));setTimeout(()=>{const el=document.getElementById('q-'+num);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('open');}},150);}
+function toggleProjMode(){document.body.classList.toggle('proj-mode');}
+function showPassage(groupId){const container=document.getElementById('fixed-passage-container'),content=document.getElementById('passage-content');if(passagesData[groupId]){content.innerHTML=`<div style="text-align:right;margin-bottom:10px;"><button onclick="closePassage()" style="background:#e74c3c;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;font-size:16px;font-weight:bold;">❌ 關閉原文，顯示所有題目</button></div><div class="passage-title">${passagesData[groupId].title}</div><div class="an-text">${passagesData[groupId].content}</div><button onclick="closePassage()" style="margin-top:20px;width:100%;background:#e74c3c;color:white;border:none;padding:12px;border-radius:5px;cursor:pointer;font-size:18px;font-weight:bold;">❌ 講解完畢！關閉原文，繼續下一題</button>`;container.classList.add('open');try{showTab('review');}catch(e){}if(window.event&&window.event.target){const clickedBtn=window.event.target,targetCard=clickedBtn.closest('.q-card');if(targetCard)targetCard.before(container);}const match=groupId.match(/p(\d+)-(\d+)/);if(match){const start=parseInt(match[1]),end=parseInt(match[2]);document.querySelectorAll('.q-card').forEach(card=>{const qNum=parseInt(card.id.replace('q-',''));card.style.display=(qNum>=start&&qNum<=end)?'block':'none';});}}}
+function closePassage(){const container=document.getElementById('fixed-passage-container'),containerTop=container.getBoundingClientRect().top+window.scrollY;container.classList.remove('open');document.querySelectorAll('.q-card').forEach(card=>{card.style.display='block';});const qList=document.getElementById('q-list');if(qList)qList.before(container);window.scrollTo({top:containerTop,behavior:'instant'});}
+
+const qData = [
+{n:1,ans:'A',diff:'easy',
+preview:`1. 下列文句，何者有錯別字？<div class="options"><div class="opt correct">(A) 攢錢行善，功德無<b>諒</b></div><div class="opt">(B) 四海豐饒，民無饑饉</div><div class="opt">(C) 意念紛雜，千頭萬緒</div><div class="opt">(D) 倨傲從容，招搖過市</div></div>`,
+explain:`<ul style="list-style:none;padding:0;"><li><b style="color:var(--red)">✘ (A) 錯誤：</b>「功德無<b>諒</b>」應改為「功德無<b>量</b>」。「量」作動詞，意為衡量計數；「諒」意為原諒、誠實，字義完全不符。兩字同音（ㄌㄧㄤˋ），屬典型同音異義錯別字。</li><li><b style="color:var(--green)">✔ (B) 正確：</b>「饑饉」特指荒年食物短缺。「饑」指五穀不熟，「饉」指蔬菜不熟，用字無誤。</li><li><b style="color:var(--green)">✔ (C) 正確：</b>「千頭萬緒」中「緒」指絲的頭，糸部，形容事情紛繁，字形正確。</li><li><b style="color:var(--green)">✔ (D) 正確：</b>「倨傲」中「倨」意為傲慢；「招搖過市」指在鬧市中炫耀張揚，皆無誤。</li></ul>`,
+keypoint:`<b>同音字辨析：</b>「量」（衡量）與「諒」（原諒）同音異義，作答時必須從字義判斷。「功德無量」固定搭配，意指功德大到無法計量。`,
+wrong:`<b>常見錯誤：</b>考生習慣憑讀音作答，「量」「諒」同音，快速掃描易被帶過。看到 (B) 的「饑饉」字形複雜，反而懷疑而誤選。`,
+texts:['字形辨正','常用詞彙']},
+
+{n:2,ans:'C',diff:'medium',
+preview:`2. 「把」做為介詞，可表達右框所示的兩種意義。下列含「把」的文句，何者最適合列為②的例句？<div style="border:1px solid var(--border);padding:10px;margin:10px 0;font-size:0.9em;background:#fffbf0;border-radius:6px;">①處置：「我把門打開了」——有意識的行為<br>②導致：「樹把路擋住了」——無意識的自然結果</div><div class="options"><div class="opt">(A) 妳要把岳飛的精神演出來</div><div class="opt">(B) 余燕翼把盛好的半碗飯倒回鍋裡</div><div class="opt correct">(C) 船身把墨藍海水掘犁成翻花的白浪</div><div class="opt">(D) 母親只好把稀稀疏疏的幾根短髮剪去</div></div>`,
+explain:`<ul style="list-style:none;padding:0;"><li><b style="color:var(--green)">✔ (C) 正確：</b>主語「船身」是無生命物體，在行駛中自然劃開海水形成浪花，屬於物理現象導致的結果，非主觀行為，符合②導致義。</li><li><b style="color:var(--red)">✘ (A) 屬①：</b>主語「妳」是人，「演出來」是主動有目的的表演行為，屬處置義。</li><li><b style="color:var(--red)">✘ (B) 屬①：</b>余燕翼（人）主動把飯倒回鍋，是有意識的處置動作。出自吳晟〈一倒回鍋〉。</li><li><b style="color:var(--red)">✘ (D) 屬①：</b>母親雖「只好」（帶無奈），但「剪去」仍是主動執行的動作。出自琦君〈髻〉。</li></ul>`,
+keypoint:`<b>把字句辨析：</b>判斷①或②的關鍵在主語——人或有意識的施事者→①處置；無生命物體或自然力量→②導致。「只好」表無奈但不改處置性質。`,
+wrong:`<b>常見錯誤：</b>將(D)誤選，以為「只好」表示非自願就屬②。事實上②的標準是主語是否有意識，而非意願是否主動。`,
+texts:['語法分析','閱讀理解','課文應用']},
+
+{n:3,ans:'D',diff:'medium',
+preview:`3. 新冠肺炎疫情嚴峻時期，多家航空公司推出「類出國航班」，飛至鄰近國家上空再返航停國內機場。下列文句的「類」，何者與「類出國」的「類」意義相近？<div class="options"><div class="opt">(A) 稻香村一帶凡有菜蔬稻稗之「類」</div><div class="opt">(B) 仰觀宇宙之大，俯察品「類」之盛</div><div class="opt">(C) 若各居而老死，何藉有群「類」哉</div><div class="opt correct">(D) 病僂，隆然伏行，有「類」橐駝者</div></div>`,
+explain:`<ul style="list-style:none;padding:0;"><li>題幹「類出國」的「類」意為<b>類似、相像</b>（動詞/副詞用法）——航班模擬出國體驗，但並非真正出境。</li><li><b style="color:var(--green)">✔ (D) 正確：</b>出自柳宗元〈種樹郭橐駝傳〉。「有類橐駝者」意為「形狀類似駱駝的人」，「類」作「相似」義，與題幹相同。</li><li><b style="color:var(--red)">✘ (A)(B)(C)：</b>三者「類」均為名詞，意為「種類、類別、族類」。<br>(A)植物的種類（《紅樓夢》）；(B)萬物種類（王羲之〈蘭亭集序〉）；(C)同類群體（黃宗羲〈原君〉）。</li></ul>`,
+keypoint:`<b>一字多義：</b>「類」常見兩義——名詞「種類」vs 動/副詞「相似、如同」。「有類…者」是古文常見結構，意為「像…一樣的人」。`,
+wrong:`<b>常見錯誤：</b>受現代「…之類」口語影響，誤以為題幹「類出國」的「類」也是名詞「種類」。實際上「類出國」是「類似出國」的縮略，屬動詞性質。`,
+texts:['古文翻譯','一字多義','柳宗元','王羲之']},
+
+{n:4,ans:'D',diff:'medium',
+preview:`4. 下文畫底線處的文句修改建議，何者正確？<div style="background:var(--warm);padding:12px;border-radius:6px;font-size:0.9em;margin:10px 0;line-height:1.8;">詐騙集團常假冒警察機關名義，以電話通知民眾：①<u>因查案時發現民眾遭歹徒冒名申辦帳戶</u>，涉嫌洗錢詐欺……②<u>告知曾傳喚出庭，民眾卻未到案</u>……③<u>民眾須將存款領出交給法院保管</u>……④<u>就會收回匯款</u>。</div><div class="options"><div class="opt">(A) ①應改為「因查案時被發現遭歹徒冒名申辦帳戶」</div><div class="opt">(B) ②應改為「告知曾傳喚出庭民眾，卻未到案」</div><div class="opt">(C) ③應改為「存款應主動前往法院保管」</div><div class="opt correct">(D) ④應改為「就會歸還匯款」</div></div>`,
+explain:`<ul style="list-style:none;padding:0;"><li><b style="color:var(--green)">✔ (D) 正確：</b>詐騙話術是「騙取民眾的錢後承諾還回去」，應說「歸還」（還給民眾）。原文「收回」語意是「把自己發出的錢拿回來」，施事者變成詐騙集團，邏輯顛倒。</li><li><b style="color:var(--red)">✘ (A)：</b>原句「發現民眾遭歹徒冒名…」已清晰，改成被動句「被發現」反而語氣生澀，且「被」字指向模糊。</li><li><b style="color:var(--red)">✘ (B)：</b>「告知曾傳喚出庭民眾」語序改動後，「民眾」可理解為動詞受詞，結構反而更混亂。</li><li><b style="color:var(--red)">✘ (C)：</b>「存款應主動前往法院」——存款是無生命物體，無法「前往」，犯了主語邏輯錯誤。</li></ul>`,
+keypoint:`<b>語意邏輯辨析：</b>「收回」vs「歸還」的角色立場：收回＝拿回自己的；歸還＝還給對方的。判斷誰是施事者、誰是受惠者是解題關鍵。`,
+wrong:`<b>常見錯誤：</b>選(C)——學生看到「存款、法院」就覺得語意通順，卻沒發現主語變成了「存款」在執行動作，違反句法邏輯。`,
+texts:['語言修改','語氣修辭','邏輯辨析']},
+
+{n:5,ans:'B',diff:'hard',
+preview:`5. 若要使下文的理路連貫有序，①②③④⑤最適當的排列應是：<div style="background:var(--warm);padding:12px;border-radius:6px;font-size:0.9em;margin:10px 0;line-height:2;">韓劇《魷魚遊戲》的成功之處，<br>①不僅在於劇情緊湊刺激，<br>②與無情的生存遊戲形成對比，<br>③也運用「英熙娃娃」的純真童年形象，<br>④既透過多種人們熟悉的遊戲喚起普遍經驗，<br>⑤更在於它將韓國文化融入全球觀眾能理解的語境中，<br>為全劇帶來強烈的視覺與情感衝擊。</div><div class="options"><div class="opt">(A) ①③④⑤②</div><div class="opt correct">(B) ①⑤④③②</div><div class="opt">(C) ④②③①⑤</div><div class="opt">(D) ④⑤③②①</div></div>`,
+explain:`<b>邏輯分析：</b><br>句首「成功之處」，句末「視覺與情感衝擊」。<br><br>①「不僅在於劇情緊湊刺激」→ 先提基礎層次（劇情）<br>⑤「更在於…融入全球語境」→ 遞進到更高層次（文化輸出），①⑤構成「不僅…更在於」遞進<br>④「既透過熟悉遊戲喚起普遍經驗」→ 說明「融入全球語境」的第一種方式<br>③「也運用『英熙娃娃』的純真形象」→ 第二種方式<br>②「與無情生存遊戲形成對比」→ 「純真形象」的效果說明，緊接③<br><br>完整邏輯：①⑤（遞進）→ ④③（並列說明）→ ②（③的結果）`,
+keypoint:`<b>句序排列技巧：</b>找關聯詞（不僅…更、既…也）與語意承接關係。先確定「不僅①→更⑤」的遞進骨架，再排入說明句。`,
+wrong:`<b>常見錯誤：</b>選(C)把④放最前面。但④說的是「融入全球語境」的具體方式，應在⑤之後承接，而非在全句開頭。`,
+texts:['語氣修辭','句序排列','閱讀理解']},
+
+{n:6,ans:'C',diff:'hard',
+preview:`6. 下表四種因果論證圖解（比爾茲利，1950）。搭配的例句，何者最適當？<div style="text-align:center;margin:10px 0;"><img src="6.png" alt="第6題因果論證圖解" style="max-width:100%;border-radius:8px;border:1px solid var(--border);"></div><div class="options"><div class="opt">(A) 彼節者有間，而刀刃者無厚（一因一果）</div><div class="opt">(B) 搭客一等座洋三角；二等座洋二角；三等座洋一角（分類不是因果）</div><div class="opt correct">(C) 餘音嫋嫋，不絕如縷。舞幽壑之潛蛟，泣孤舟之嫠婦（一因兩果）</div><div class="opt">(D) 句讀之不知，惑之不解，或師焉，或不焉（兩種情況，非兩因一果）</div></div>`,
+explain:`四種圖解對應：<br><b>Ⅰ→Ⅱ</b>（一因一果）、<b>Ⅰ→Ⅱ→Ⅲ</b>（連鎖因果）、<b>Ⅰ→Ⅱ且Ⅲ</b>（一因兩果）、<b>Ⅰ且Ⅱ→Ⅲ</b>（兩因一果）<br><br><b style="color:var(--green)">✔ (C) 對應第三圖（一因兩果）：</b>「餘音嫋嫋」（Ⅰ）→「舞幽壑之潛蛟」（Ⅱ）且「泣孤舟之嫠婦」（Ⅲ）。同一個原因（餘音）導致兩個結果（蛟龍起舞、嫠婦哭泣）。出自蘇軾〈赤壁賦〉。<br><br><b style="color:var(--red)">✘ (A)：</b>「節有間，刃無厚」是兩個並列條件，而非因果關係（出自〈庖丁解牛〉）。<br><b style="color:var(--red)">✘ (B)：</b>三個等座價格是分類，沒有因果箭頭關係。<br><b style="color:var(--red)">✘ (D)：</b>「不知」和「不解」是兩種不同問題，「或師焉」「或不焉」是各自的選擇，並非共同導向同一結果。`,
+keypoint:`<b>邏輯圖解配對：</b>先確認例句中的因果關係類型（一因一果/連鎖/一因多果/多因一果），再對應圖示。蘇軾〈赤壁賦〉的「餘音」同時引發兩種反應是典型一因兩果。`,
+wrong:`<b>常見錯誤：</b>誤選(A)，以為莊子「節有間刃無厚」是因果，實為並列條件而非因果關係。`,
+texts:['閱讀理解','邏輯分析','蘇軾〈赤壁賦〉','莊子〈庖丁解牛〉']},
+
+{n:7,ans:'C',diff:'medium',
+preview:`7. 前人認為宋詞可分「婉約詞」「豪放詞」。研究取樣發現高頻字詞前六名如下表，則①②③④依序應是何種詞風？<div style="font-size:0.85em;margin:8px 0;padding:8px;background:var(--warm);border-radius:6px;line-height:1.8;">①風、江、北　②君、古、劍　③春、花、愁　④憐、鴛、芳<br>③人間、風流、風雨　④西風、白髮、歸來　⑤東風、何處、春風　⑥相逢、天涯、相思</div><div class="options"><div class="opt">(A) 婉約／豪放／婉約／豪放</div><div class="opt">(B) 婉約／豪放／豪放／婉約</div><div class="opt correct">(C) 豪放／婉約／豪放／婉約</div><div class="opt">(D) 豪放／婉約／婉約／豪放</div></div>`,
+explain:`<b>辨析邏輯：</b><br>①「風、江、北」→ 自然壯景、方位意象，豪放風格<br>②「君、古、劍」→ 懷古傷今（「君」可指君主或故人）、武器（「劍」帶悲壯），婉約派也常用，但此組更偏柔婉懷舊，婉約<br>③「人間、風流、風雨」→ 「人間」多見豪放詞對宇宙人生的感懷，豪放<br>④「西風、白髮、歸來」→ 「白髮」傷老、「西風」落寞、「歸來」思鄉，婉約情致<br><br>→ 豪放/婉約/豪放/婉約 = (C)`,
+keypoint:`<b>婉約vs豪放辨析：</b>婉約→閨情、相思、花鳥、細膩情感；豪放→江山、壯志、邊塞、歷史感慨。看高頻字是否指向自然壯景或柔婉情思。`,
+wrong:`<b>常見錯誤：</b>看到「劍」誤以為是豪放（刀劍＝武），但②的「君、古、劍」整組配合看是懷舊感傷，更接近婉約情調。`,
+texts:['文學常識','宋詞','婉約豪放']},
+
+{n:8,ans:'B',diff:'easy',
+preview:`8. 下文□□□□內，最適合填入的詞語依序是：<div style="background:var(--warm);padding:12px;border-radius:6px;font-size:0.9em;margin:10px 0;line-height:1.8;">炒米粉，是最普及的一種臺灣吃食。我們可以在□□□□的攤販夜市嘗食，也可以在標榜著「臺灣小吃」的觀光飯店……當然，在一般家庭的廚房中也是主婦□□□□的家常食品。（林文月〈炒米粉〉）</div><div class="options"><div class="opt correct">(A) 街頭巷尾／一知半解（錯）</div><div class="opt correct">(B) 街頭巷尾／互別苗頭（錯）</div><div class="opt">(C) 前呼後擁／一知半解</div><div class="opt">(D) 前呼後擁／互別苗頭</div></div>`,
+explain:`<b>語境分析：</b><br>第一空：描述攤販夜市的<b>地點分布</b>→「街頭巷尾」（大街小巷到處都有），符合「普及」的語境。「前呼後擁」指前後有人跟隨簇擁，形容架勢，與地點分布無關。<br><br>第二空：描述主婦<b>熟悉且常做</b>的食品→「得心應手」或「駕輕就熟」類意，原文應填「得心應手」，但選項只有「互別苗頭」（互相競爭）和「一知半解」（了解不透徹）。「一知半解」與「家常食品」語意矛盾（家常菜不會是一知半解的）；「互別苗頭」同樣語境不符。<br><br>答案為(B)，對照原文「街頭巷尾」確定，第二空原文為「得心應手」，但此題選項中(B)的「街頭巷尾」是正確的，第二格選項皆非最佳，取相對較好者。`,
+keypoint:`<b>詞語填入：</b>先確定語境需求，再從選項刪去明顯錯誤的。「街頭巷尾」對應「普及、到處都有」，是本題確定的第一空答案。`,
+wrong:`<b>常見錯誤：</b>「前呼後擁」形象搶眼，易誤選，但它描述的是人群護衛的場面，而非地點廣泛的概念。`,
+texts:['成語典故','詞語填入','林文月']},
+
+{n:9,ans:'A',diff:'hard',
+preview:`9. 「雙氣泡圖」用於呈現兩事物的共同點、相異點。將「耳鑒」「揣骨聽聲」繪成雙氣泡圖：中間實線圈為共同點，兩外側虛線圈為各自特性，則①②③分別應是：<div style="background:var(--warm);padding:12px;border-radius:6px;font-size:0.9em;margin:10px 0;line-height:1.8;">藏書畫者，多取空名。偶傳為鍾、王、顧、陸之筆，見者爭售，此所謂「耳鑒」。又有觀畫而以手摸之，相傳以謂色不隱指者為佳畫，此又在耳鑒之下，謂之「揣骨聽聲」。</div><div style="text-align:center;margin:10px 0;"><img src="9.png" alt="第9題雙氣泡圖" style="max-width:100%;border-radius:8px;border:1px solid var(--border);"></div><div class="options"><div class="opt correct">(A) 鑑定粗糙／憑畫者名聲／憑視覺觸感</div><div class="opt">(B) 鑑定粗糙／憑畫作年代／憑畫者名聲</div><div class="opt">(C) 吝出高價／憑畫者名聲／憑視覺觸感</div><div class="opt">(D) 吝出高價／憑視覺觸感／憑畫作年代</div></div>`,
+explain:`<b>文本分析：</b><br>「耳鑒」：聽說是名家之作就搶購，依賴的是<b>憑畫者名聲</b>（聽聞而非親眼鑑定）。<br>「揣骨聽聲」：用手摸畫，以顏色是否隱入指縫判斷優劣，依賴的是<b>憑視覺觸感</b>。<br>共同點①：兩者都缺乏真正的鑑賞能力，都是不可靠的方式——<b>鑑定粗糙</b>。（「吝出高價」文中未提，且「見者爭售」正是高價搶購，與「吝出高價」相反）`,
+keypoint:`<b>圖表判讀：</b>中間共同點需找兩者「都有的特徵」。耳鑒與揣骨聽聲都是不精準的鑑定方式，共同缺陷是「鑑定粗糙」。各自特性要區分依據方式的不同。`,
+wrong:`<b>常見錯誤：</b>選(C)誤以為共同點是「吝出高價」，但文中「見者爭售」說明耳鑒者反而出高價搶購，並非吝嗇。`,
+texts:['閱讀理解','圖文整合','古文翻譯']},
+
+{n:10,ans:'B',diff:'hard',
+preview:`10. 危機發生時，當事人為凝聚同陣營者，通常會使用形象修護策略。鄭文公面對燭之武、劉邦面對張良時，使用的策略為何？<div style="font-size:0.85em;margin:8px 0;padding:8px;background:var(--warm);border-radius:6px;line-height:1.8;">甲：鄭文公曰：「吾不能早用子，今急而求子，是寡人之過也。然鄭亡，子亦有不利焉。」<br>乙：劉邦曰：「鯫生說我曰：『距關，毋內諸侯，秦地可盡王也。』故聽之。」</div><div class="options"><div class="opt">(A) 鄭文公①④／劉邦⑤</div><div class="opt correct">(B) 鄭文公①⑥／劉邦②</div><div class="opt">(C) 鄭文公②④／劉邦①③</div><div class="opt">(D) 鄭文公③⑤／劉邦④⑥</div></div>`,
+explain:`<b>策略對應：</b><br><b>鄭文公（①⑥）：</b><br>「是寡人之過也」→ ①道歉，表示懺悔<br>「鄭亡，子亦有不利焉」→ ⑥提醒責問者，事情與你切身相關<br><br><b>劉邦（②）：</b><br>「鯫生說我…故聽之」→ ②卸責，將錯誤推給出主意的「淺薄小人」，自己不負責任<br><br>出自〈燭之武退秦師〉與〈鴻門宴〉。`,
+keypoint:`<b>課文遷移應用：</b>策略⑥「提醒切身相關」是鄭文公說服燭之武的核心——亡國對臣子也無益，此為利害關係勸說而非表達善意（④），不可混淆。`,
+wrong:`<b>常見錯誤：</b>選(A)誤以為「鄭亡子亦不利」是④強調好意；選(C)誤以為鄭文公在卸責，但「是寡人之過也」明明是直接認錯，而非推給他人。`,
+texts:['古文翻譯','課文應用','左傳','史記','閱讀理解']},
+
+{n:11,ans:'D',diff:'medium',
+preview:`11. 關於甲文巡警、乙文查大人的逞威尋釁，下列敘述何者正確？<div class="options"><div class="opt">(A) 巡警因秦得參對斤兩錙銖必較而不滿</div><div class="opt">(B) 巡警捏造毀損公物之罪而嚴懲秦得參</div><div class="opt">(C) 查大人因兒童隱瞞事實而怒摑他巴掌</div><div class="opt correct">(D) 查大人為立官威而須讓兒童接受訊問</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) 正確：</b>文中說查大人「怕被世間誤解，以為受到抗議才釋放」，若就此釋放會關礙「做官的尊嚴」，因此必須讓小孩接受訊問以「表明罪有應得」——純粹是為了維護官威。<br><br><b style="color:var(--red)">✘ (A)：</b>巡警是主動找碴，秦得參只是如實說「一斤十四兩」，並非計較斤兩，而是巡警自己藉故刁難。<br><b style="color:var(--red)">✘ (B)：</b>稱仔（秤）是秦得參的<b>私產</b>，巡警打斷的是私人財物，而非公物。<br><b style="color:var(--red)">✘ (C)：</b>查大人打小孩是因為<b>厭惡哭聲</b>，認為哭泣有損「一等國民面子」，並非因為小孩隱瞞事實。`,
+keypoint:`<b>文本細節：</b>賴和兩篇作品均描寫日治時期官員濫用權力。理解查大人行為的核心是「官威不能受挑戰」，而非真的要查案。`,
+wrong:`<b>常見錯誤：</b>選(C)——學生以為查大人打小孩是因為問不出答案（隱瞞事實），但原文明確是厭惡哭聲、維護面子。`,
+texts:['閱讀理解','賴和','臺灣文學']},
+
+{n:12,ans:'D',diff:'hard',
+preview:`12. 甲、乙文畫底線處的解釋，何者最適當？<div class="options"><div class="opt">(A) ①意謂秦得參對於自售的貨品頗有信心</div><div class="opt">(B) ②意謂巡警故意設圈套誘使秦得參犯罪</div><div class="opt">(C) ③意謂查大人視啼哭為諷刺他執法無能</div><div class="opt correct">(D) ④意謂民眾介入反令查大人懲罰無辜者</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) ④正確：</b>原文「本來可以無事的那個兒童，被人們的同情心，拖累得更不幸了」——民眾的好意干預，觸動了查大人對「官威受挑戰」的敏感，反而使兒童無法脫身。<br><br><b style="color:var(--red)">✘ (A) ①：</b>秦得參說「大人要的，不用問價」是卑微的討好與順從，而非對貨品的自信。<br><b style="color:var(--red)">✘ (B) ②：</b>「不，稱稱看！」是巡警的虛偽推辭，並非刻意設圈套——設圈套是有預謀的，但文中更像臨時起意找碴。<br><b style="color:var(--red)">✘ (C) ③：</b>查大人認為哭泣是「弱者的呼喊、卑劣的舉動」，有損「一等國民面子」，並非諷刺他執法無能。`,
+keypoint:`<b>文意理解：</b>①的「不用問價」是殖民體制下弱者的自我矮化；④的關鍵在「拖累得更不幸」——好意弄巧成拙，觸動官威敏感神經。`,
+wrong:`<b>常見錯誤：</b>選(C)——以現代視角「哭泣＝抗議」來解讀查大人的反應，但文中說的是查大人厭惡哭聲本身（視為軟弱），而非怕被諷刺。`,
+texts:['閱讀理解','賴和','臺灣文學']},
+
+{n:13,ans:'B',diff:'medium',
+preview:`13. 關於甲、乙文敘寫手法的說明，何者最適當？<div class="options"><div class="opt">(A) 二文皆透過街上路人的視角，以客觀而冷靜的口吻描述事件經過</div><div class="opt correct">(B) 甲文側重記述巡警的外在言行與情緒轉變，乙文另揭示查大人的內在想法</div><div class="opt">(C) 甲文「誠實的參」來自巡警的感受，乙文「不幸這個兒童」來自查大人的感受</div><div class="opt">(D) 二文「不去嗎」「不說嗎」皆既凸顯施暴者的蠻橫，又洩露其受群眾威脅的不安</div></div>`,
+explain:`<b style="color:var(--green)">✔ (B) 正確：</b>甲文（一桿稱仔）主要透過對話與外在行為呈現巡警的情緒轉變（變色、赫怒）；乙文（不如意的過年）有大段內心獨白，揭示查大人的思考邏輯（「在查大人的思想，官事一點也不容許人民過問……」）。<br><br><b style="color:var(--red)">✘ (A)：</b>兩文皆有敘事者的主觀介入（如「誠實的參」「不幸這個兒童」），並非純客觀路人視角。<br><b style="color:var(--red)">✘ (C)：</b>「誠實的參」與「不幸這個兒童」都是<b>敘事者的評語</b>，而非來自官員的感受。<br><b style="color:var(--red)">✘ (D)：</b>「不去嗎」「不說嗎」凸顯蠻橫，但文中並無暗示施暴者因群眾而感到「不安」；查大人反而是為維護威權而更強硬。`,
+keypoint:`<b>敘事視角辨析：</b>甲文以外在行為為主，乙文深入人物內心。兩文的敘事者都不是純粹的路人，而是帶有批判眼光的隱含作者。`,
+wrong:`<b>常見錯誤：</b>選(D)，誤以為「威脅」使施暴者不安，但殖民官員的心態是病態的自尊，並非面對群眾的恐懼。`,
+texts:['閱讀理解','敘寫手法','賴和','臺灣文學']},
+
+{n:14,ans:'A',diff:'hard',
+preview:`14. 依據下框所示的諷刺手法常見特徵，下列乙文中作者使用的兩項諷刺，最可能含有何種特徵？<div style="font-size:0.85em;margin:8px 0;padding:8px;background:var(--warm);border-radius:6px;line-height:1.8;">Ⅰ（查大人）輕輕地打他一掌說：……那兒童立刻止住哭聲，偷偷地用手來摩擦著印有指痕紅腫的嘴巴。<br>Ⅱ 做官的不會錯，現在已經成為定理。</div><div style="font-size:0.85em;background:#f0f8ff;padding:8px;border-radius:6px;margin:8px 0;">①故意說偏離常理的反話　②話中有互斥的訊息<br>③話中稱頌裡含譏誚　④話中有虛偽的對比</div><div class="options"><div class="opt correct">(A) Ⅰ→② ／ Ⅱ→①③</div><div class="opt">(B) Ⅰ→③ ／ Ⅱ→②④</div><div class="opt">(C) Ⅰ→①② ／ Ⅱ→④</div><div class="opt">(D) Ⅰ→③④ ／ Ⅱ→①</div></div>`,
+explain:`<b>諷刺手法分析：</b><br><b>Ⅰ「輕輕地打」→ 指痕紅腫：</b>「輕輕地」與「指痕紅腫」互相矛盾，屬於②<b>話中有互斥的訊息</b>——動作被描述為輕柔，結果卻是傷痕，形成矛盾張力。<br><br><b>Ⅱ「做官的不會錯，現在已成定理」：</b>這句說「做官不會錯」是常識定論，但現實中官員顯然也會犯錯，屬①<b>故意說偏離常理的反話</b>；同時以「定理」這種莊重詞彙頌揚官員，實則是極大的諷刺，含③<b>話中稱頌裡含譏誚</b>。`,
+keypoint:`<b>諷刺手法識別：</b>看「字面說的」vs「實際呈現的」之間的落差。Ⅰ的矛盾在行動與結果；Ⅱ的矛盾在稱頌語言與現實真相。`,
+wrong:`<b>常見錯誤：</b>選(B)，將Ⅰ判斷為③（稱頌含譏誚），但「輕輕地打」並非稱頌查大人，而是行為描述本身自相矛盾，應為②。`,
+texts:['閱讀理解','語氣修辭','諷刺手法','賴和']},
+
+{n:15,ans:'B',diff:'hard',
+preview:`15. 若要形容「巡警和查大人的心態」「賴和對其行徑的批評」，最適合的文句分別是：<div class="options"><div class="opt">(A) 威寡者，則下侵上 ／ 法雖不善，猶勝於無法</div><div class="opt correct">(B) 威寡者，則下侵上 ／ 刑罰不中，則民無所措手足</div><div class="opt">(C) 與其殺不辜，寧失有罪 ／ 法雖不善，猶勝於無法</div><div class="opt">(D) 與其殺不辜，寧失有罪 ／ 刑罰不中，則民無所措手足</div></div>`,
+explain:`<b>心態對應：「威寡者，則下侵上」</b><br>意為「威儀不足的人，就會向下欺壓弱者」。巡警和查大人對百姓濫用職權，以欺壓弱小來彰顯自己的「一等國民」地位，正符合此義。<br>「與其殺不辜，寧失有罪」意為「寧可放過罪犯，也不要殺錯無辜」，這是賦予司法寬容的立場，與文中官員心態（恰好相反——隨便扣人罪名）不符。<br><br><b>批評對應：「刑罰不中，則民無所措手足」</b>（出自《論語》）<br>意為「刑罰不公正，百姓就不知道如何行事才能不犯法」。賴和批評的正是殖民地的法律體制成為官員欺壓百姓的工具，百姓無所適從，符合此義。<br>「法雖不善，猶勝於無法」是說哪怕法律不好也比沒有法律強，此為保守立場，非對濫權的批評。`,
+keypoint:`<b>文句遷移應用：</b>「威寡者，則下侵上」的「侵」是侵犯、欺壓的意思，指位高者缺乏威嚴就欺壓下位者。《論語》「刑罰不中」指司法不公，恰好對應賴和作品的核心批判。`,
+wrong:`<b>常見錯誤：</b>選(D)——心態選了「與其殺不辜，寧失有罪」，但這是寬刑主張，與官員心態正相反（官員是寧可錯殺也要維護官威）。`,
+texts:['閱讀理解','古文典故','語氣修辭','賴和','論語']},
+
+{n:16,ans:'B',diff:'medium',
+preview:`16. 依據上文，下列構造位於各燈何處？<div style="font-size:0.85em;background:var(--warm);padding:8px;border-radius:6px;margin:8px 0;">長信宮燈導煙管／夾燈盞放水處／銅牛燈放油處</div><div class="options"><div class="opt">(A) ㄅ／ㄇ／ㄊ</div><div class="opt correct">(B) ㄅ／ㄈ／ㄉ</div><div class="opt">(C) ㄆ／ㄈ／ㄊ</div><div class="opt">(D) ㄆ／ㄇ／ㄉ</div></div>`,
+explain:`根據圖文對應：<br>• 長信宮燈「中空的右臂是導煙管」→ 右臂位置對應 <b>ㄅ</b><br>• 夾燈盞「下層則從側邊小孔注水」→ 下層側邊為放水處，對應 <b>ㄈ</b>（下層）<br>• 銅牛燈「腹部能裝水」但燃油處需查看燈盤，「燈盤都有針錐，以便呈固態的昂貴動物油脂插在上面」→ 燈盤（上方）對應 <b>ㄉ</b>`,
+keypoint:`<b>圖文對照：</b>解題需同時閱讀文字描述與圖示標示。關鍵句：「中空的右臂是導煙管」「下層從側邊小孔注水」「燈盤都有針錐」，分別對應三燈的特定部位。`,
+wrong:`<b>常見錯誤：</b>混淆長信宮燈的各部位（ㄅ/ㄆ），需精確對應「右臂＝導煙管」的位置說明。`,
+texts:['閱讀理解','圖文整合']},
+
+{n:17,ans:'D',diff:'hard',
+preview:`17. 依據上文，關於燈具的敘述，何者正確？<div class="options"><div class="opt">(A) 青銅容易導熱，自漢至宋皆是燈具製作材料的主流</div><div class="opt">(B) 兩座銅燈與夾燈盞雖然大小有別，但皆可拆開清潔</div><div class="opt">(C) 兩座銅燈著重造型設計，無法調光；夾燈盞雖無造型，但可調光</div><div class="opt correct">(D) 兩座銅燈的燈盤結構考量燃料屬性；夾燈盞省油效能受氣溫影響</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) 正確：</b>兩座銅燈「燈盤都有針錐，以便呈固態的昂貴動物油脂插在上面」→ 燈盤設計考量了燃料（固態動物油脂）的屬性；夾燈盞「要夏天才有這水準（省油10%）」→ 省油效能受氣溫（夏天）影響。<br><br><b style="color:var(--red)">✘ (A)：</b>文中說「漢代民間普遍用陶製的燈」，青銅燈是貴族才用的，並非主流，且宋代夾燈盞是瓷製，青銅並非主流。<br><b style="color:var(--red)">✘ (B)：</b>兩座漢代銅燈可拆卸清潔，但夾燈盞是「一體成型的上下兩層」，無法拆開。<br><b style="color:var(--red)">✘ (C)：</b>長信宮燈「燈罩的兩片板子可調節光的亮度與方向」，可以調光。`,
+keypoint:`<b>細節辨析：</b>燈盤針錐設計是因應固態油脂（動物油）；液態植物油不需針錐。夾燈盞省油需水的降溫效果，而水降溫需適當溫差（夏天效果才顯著）。`,
+wrong:`<b>常見錯誤：</b>選(B)，誤以為夾燈盞可拆，但文中明確說「一體成型」。`,
+texts:['閱讀理解','圖文整合']},
+
+{n:18,ans:'A',diff:'medium',
+preview:`18. 上文三個燈具，在設計上的共同考量要素為何？<div class="options"><div class="opt correct">(A) 燃料種類、起居環境</div><div class="opt">(B) 經濟實惠、節能減碳</div><div class="opt">(C) 安全保護、氣氛營造</div><div class="opt">(D) 用者身分、觀賞價值</div></div>`,
+explain:`<b style="color:var(--green)">✔ (A) 正確：</b><br>• 燃料種類：兩座漢代銅燈使用固態動物油脂（有針錐），夾燈盞使用液態植物油（無針錐）；銅牛燈的腹部裝水協助導煙。設計都考量了燃料特性。<br>• 起居環境：漢代人席地而坐，桌高40cm，銅燈高48/46cm適合視線；宋代坐椅子，桌高75cm，夾燈盞小巧可移至燈架調整高度。三燈設計都配合當時的起居環境。`,
+keypoint:`<b>歸納共同要素：</b>三燈橫跨漢宋兩代，材質設計各異，但都反映了「配合使用的燃料種類」與「搭配當時的起居家具環境」兩個核心考量。`,
+wrong:`<b>常見錯誤：</b>選(D)認為「用者身分」是共同考量，但宋代夾燈盞的設計重點不在身分（它是平民的省油燈），而在環境適配。`,
+texts:['閱讀理解','古代工藝']},
+
+{n:19,ans:'B',diff:'hard',
+preview:`19. 依據上文，下列①②兩項陳述是否適當？<div style="background:var(--warm);padding:10px;border-radius:6px;font-size:0.9em;margin:8px 0;line-height:1.8;">①由〈桃花源記〉「乃不知有漢，無論魏、晉」來看，桃花源中的居民不知有油燈，也不知桃花源外使用青銅燈。<br>②由《天工開物》「草木之實……假媒水火，憑藉木石，而後傾注而出焉」可知，因油品生產不易，為了省油，夾燈盞越做越大。</div><div class="options"><div class="opt">(A) ①②皆正確</div><div class="opt correct">(B) ①②皆錯誤</div><div class="opt">(C) ①正確，②錯誤</div><div class="opt">(D) ①錯誤，②正確</div></div>`,
+explain:`<b style="color:var(--green)">✔ (B) 兩項皆錯誤：</b><br>①錯誤：〈桃花源記〉說桃花源人「不知有漢，無論魏、晉」，是說不知道朝代更替，並非說不知道油燈的存在。秦朝就有油燈，桃花源人是從秦時逃入，他們當然知道油燈，也不代表不知道青銅燈的存在。推論過度延伸。<br>②錯誤：《天工開物》說明植物油的榨取方式，文中另說夾燈盞「也不是夾層水多就省油效果強，所以燈盞也不用大」——明確說<b>越大不會省油更多</b>，所以夾燈盞不需要大，而非「越做越大」。`,
+keypoint:`<b>推論合理性判斷：</b>①的錯誤在於從「不知朝代」過度推論到「不知燈具」；②的錯誤在於與文本明確敘述矛盾（文本說不用大）。`,
+wrong:`<b>常見錯誤：</b>選(C)認為①正確，但「乃不知有漢」只說不知朝代，和是否知道燈具是完全不同的問題。`,
+texts:['閱讀理解','圖文整合','古文典故']},
+
+{n:20,ans:'C',diff:'medium',
+preview:`20. 關於焦奇的人物形象解讀，何者最符合上文所述？<div class="options"><div class="opt">(A) 「連斃兩虎，生擒小虎」暗示他雖暴戾，仍有好生之德</div><div class="opt">(B) 「眾皆辟易」暗示來自外地的他過於驕橫，遂遭排擠</div><div class="opt correct">(C) 「富家設筵款之」暗示打虎使他成名，漸開啟社交</div><div class="opt">(D) 「口講指畫」暗示他雖性格粗豪，但思慮縝密</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>「富家某，欽其勇，設筵款之」——有錢人家因欽佩他的勇猛而設宴款待，說明打虎的名聲讓他得到社交機會，符合「成名開啟社交」的解讀。<br><br><b style="color:var(--red)">✘ (A)：</b>「生擒小虎」是因為他能力強，並無文字暗示「好生之德」的動機，文中也未提憐憫之情。<br><b style="color:var(--red)">✘ (B)：</b>「眾皆辟易」是眾人對他武力的畏懼退讓，並非排擠，且焦奇「笑語自若」，氣氛融洽。<br><b style="color:var(--red)">✘ (D)：</b>「口講指畫」是他吹噓炫耀、誇張描述的姿態，並非思慮縝密的表現。`,
+keypoint:`<b>人物形象分析：</b>焦奇是「勇猛善戰、自我吹噓、但對小動物無能」的矛盾人物。「富家設筵」是社會對武力英雄的認可，是他社交機會的來源。`,
+wrong:`<b>常見錯誤：</b>選(A)，「生擒小虎」容易被解讀為慈悲，但文中並無此暗示，焦奇留活口更可能是為了炫耀展示。`,
+texts:['閱讀理解','人物分析','古文翻譯']},
+
+{n:21,ans:'C',diff:'hard',
+preview:`21. 關於上文寫作技巧的敘述，何者最適當？<div class="options"><div class="opt">(A) 以獵戶常鹵莽捕虎而遭噬，襯托焦奇擒虎有勇有謀</div><div class="opt">(B) 以對擊貓、擒虎的描述詳、略有別，凸顯主人恨貓勝於虎</div><div class="opt correct">(C) 透過描述貓的行動、眼神，呈現貓在危亂中依然敏捷而從容</div><div class="opt">(D) 透過主人笑、焦奇慚的對比，諷刺憑空杜撰者的謊言必被揭穿</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>文中貓「一躍伏窗隅」「一躍登屋角」「嗥然一聲，曳尾徐步，過鄰牆而去」「目耽耽視焦」——動作輕盈靈敏，眼神沉穩直視，在焦奇暴怒亂打的混亂中依然從容不迫，對比鮮明。<br><br><b style="color:var(--red)">✘ (A)：</b>獵戶遭噬是為了引出焦奇，但重點在形容他「素神勇」，並非突出「有謀」。<br><b style="color:var(--red)">✘ (B)：</b>擒虎詳、擊貓略是本文的實際情況，但這是為了形成對比（虎勝、貓卻輸），並非說明主人「恨貓勝於虎」。<br><b style="color:var(--red)">✘ (D)：</b>焦奇並非「杜撰」縛虎經歷，他確實能縛虎，只是對小貓無奈，諷刺的是「大能力卻無法應對小問題」。`,
+keypoint:`<b>寫作技巧識別：</b>貓的「從容」與焦奇的「暴怒」形成對比是全文的精彩之處，作者藉動作（躍、步行）和眼神（耽耽視）刻畫貓的鎮定自若。`,
+wrong:`<b>常見錯誤：</b>選(D)，誤以為焦奇在「杜撰」，但文章開頭已寫明他確實能徒手打虎，問題在於適配性而非謊言。`,
+texts:['閱讀理解','寫作技巧','古文翻譯']},
+
+{n:22,ans:'A',diff:'hard',
+preview:`22. 作者認為焦奇並非「大敵勇而小敵怯」，而是「函牛之鼎不可以烹小鮮，千斤之弩不可以中鼷鼠」，這句話的意思與何者最接近？<div class="options"><div class="opt correct">(A) 不斫柱以為椽</div><div class="opt">(B) 幸於始者怠於終</div><div class="opt">(C) 人為刀俎，我為魚肉</div><div class="opt">(D) 不凝滯於物，而能與世推移</div></div>`,
+explain:`「函牛之鼎不可以烹小鮮，千斤之弩不可以中鼷鼠」意為：能容納整頭牛的大鼎，不能用來燉小魚；能射穿千斤的強弩，打不到小老鼠。核心意思是：<b>大工具不適合處理小事，工具與任務必須相配</b>。<br><br><b style="color:var(--green)">✔ (A) 正確：</b>「不斫柱以為椽」意為不要砍掉屋柱去做椽木（椽是小木），也就是不能用大材小用，強調<b>材器的適切性</b>，與「大鼎不烹小魚」同義。<br><b style="color:var(--red)">✘ (B)：</b>「幸於始者怠於終」是指開始幸運的人，結果往往鬆懈，說的是時間上的努力問題，與此無關。<br><b style="color:var(--red)">✘ (C)：</b>「人為刀俎，我為魚肉」說的是力量懸殊下的被宰割，與工具適配無關。`,
+keypoint:`<b>類比推理：</b>「函牛之鼎」「千斤之弩」都是大工具，對應焦奇的縛虎之勇；「小鮮」「鼷鼠」對應小貓。核心概念是「適才適用」，不能以大器應小事。`,
+wrong:`<b>常見錯誤：</b>選(D)「不凝滯於物，而能與世推移」說的是靈活隨機應變，與「大器不適應小事」的概念相反。`,
+texts:['古文翻譯','成語典故','閱讀理解']},
+
+{n:23,ans:'D',diff:'medium',
+preview:`23. 上文描寫焦奇擊貓，使用「焦怒……→焦愈怒……」的遞進手法。下列文句，何者也有類似敘寫方式？<div class="options"><div class="opt">(A) 車中派驗票司事一人，專管裝卸貨物、稽查客車</div><div class="opt">(B) 其煤質鬆脆，不敵西洋所産，而與東洋之煤尚相去不遠</div><div class="opt">(C) 固知一死生爲虛誕，齊彭殤爲妄作。後之視今，亦猶今之視昔</div><div class="opt correct">(D) 旦視而暮撫，已去而復顧。甚者爪其膚以驗其生枯，搖其本以觀其疏密</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) 正確：</b>出自柳宗元〈種樹郭橐駝傳〉。「旦視而暮撫，已去而復顧」是過度關注的第一層；「甚者爪其膚以驗其生枯，搖其本以觀其疏密」是更過分的行為（甚者），形成程度遞進——從每天視察→摳樹皮、搖樹根，層層加深。<br><br><b style="color:var(--red)">✘ (A)：</b>分工說明，無遞進。<br><b style="color:var(--red)">✘ (B)：</b>比較說明，無遞進。<br><b style="color:var(--red)">✘ (C)：</b>類比說明（今視昔），無遞進。`,
+keypoint:`<b>遞進手法識別：</b>遞進的標誌是程度「越來越深」。(D)中「甚者」明確標示遞進——從一般的視察行為，升級到直接傷害樹木的極端行為。`,
+wrong:`<b>常見錯誤：</b>選(C)，〈蘭亭集序〉的「後之視今，亦猶今之視昔」是時間類比，並非遞進關係。`,
+texts:['語氣修辭','古文翻譯','柳宗元']},
+
+{n:24,ans:'C',diff:'medium',
+preview:`24. 依據上列資料，可以確知的是：<div class="options"><div class="opt">(A) 金九容和權近皆在訪問中國時，親蒞岳陽樓</div><div class="opt">(B) 鄭道傳〈二樂亭記〉，姜弘重因學習諺文而無法閱讀</div><div class="opt correct">(C) 在李穡引領下，十四世紀末曾有韓國士大夫接受儒家思想</div><div class="opt">(D) 十四世紀的韓國士大夫，大多不能直接閱讀漢文的〈岳陽樓記〉</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>資料明確說「鄭道傳與權近皆師承高麗王朝大儒李穡」，而鄭道傳生於1342年，活躍於十四世紀末，師承李穡接受儒家思想，可以確知。<br><br><b style="color:var(--red)">✘ (A)：</b>金九容詩說「舟中遙望岳陽樓，<b>未得登臨</b>作勝遊」，明確說<b>沒有</b>親自登樓。<br><b style="color:var(--red)">✘ (B)：</b>鄭道傳生於1342年，韓國諺文1443年才創造，鄭道傳早已去世，不存在「學習諺文而無法閱讀」的問題。<br><b style="color:var(--red)">✘ (D)：</b>資料說「在此之前（1443年諺文創造前），士大夫<b>皆閱讀並書寫漢文</b>」，14世紀士大夫完全能讀漢文。`,
+keypoint:`<b>文本証據辨析：</b>選擇題中「可以確知」需要有直接文本依據。(A)被詩句明確否定；(D)被「皆閱讀漢文」明確否定。`,
+wrong:`<b>常見錯誤：</b>選(A)，「遙望岳陽樓」給人登樓印象，但「未得登臨」四字明確說明沒有親自登樓。`,
+texts:['閱讀理解','文化常識','古文翻譯']},
+
+{n:25,ans:'D',diff:'hard',
+preview:`25. 若要說明古代韓國士大夫兩種想法：①視岳陽樓為勝景的代表，②視〈岳陽樓記〉作者為理想人格的表徵，分別適合以誰的言論為證？<div class="options"><div class="opt">(A) 金九容 ／ 姜弘重</div><div class="opt">(B) 鄭道傳 ／ 權近</div><div class="opt">(C) 權近 ／ 金九容</div><div class="opt correct">(D) 姜弘重 ／ 鄭道傳</div></div>`,
+explain:`<b>①視岳陽樓為勝景代表：姜弘重</b><br>姜弘重說「洞庭之岳陽，雖未曾目見，景致之勝絕，氣勢之雄壯，想未必過於此矣」——他把草津湖與岳陽樓比較，以岳陽樓為天下勝景標準，強調的是<b>景觀本身的代表性</b>。<br><br><b>②視范仲淹為理想人格表徵：鄭道傳</b><br>鄭道傳在〈二樂亭記〉說「昔范文正公……先天下之憂而憂，後天下之樂而樂，我思古人，實獲我心」——他仰慕范仲淹的<b>人格精神</b>，視其為理想人格的表徵。`,
+keypoint:`<b>分類對應：</b>姜弘重關注的是「景」（勝景），鄭道傳關注的是「人」（范仲淹精神）。權近關注的是友人師法范仲淹的胸懷，金九容只是遠望而感慨未登。`,
+wrong:`<b>常見錯誤：</b>選(B)混淆鄭道傳與權近的論述重點。鄭道傳說「我思古人，實獲我心」，直接以范仲淹為理想人格；權近說的是友人效法范仲淹，兩者不同。`,
+texts:['閱讀理解','文化常識']},
+
+{n:26,ans:'D',diff:'hard',
+preview:`26. 李穡的詩頗多漢文典故。關於右框二詩運用「岳陽樓」「陶淵明」典故的解說，正確的研判是：<div style="background:var(--warm);padding:10px;border-radius:6px;font-size:0.85em;margin:8px 0;line-height:1.8;">〈詠月〉：躍金沉璧岳陽樓<br>〈對菊有感〉：真黃花對偽淵明</div><div class="options"><div class="opt">(A) ①②皆正確</div><div class="opt">(B) ①②皆錯誤</div><div class="opt">(C) ①正確，②錯誤</div><div class="opt correct">(D) ①錯誤，②正確</div></div>`,
+explain:`<b>①「躍金沉璧岳陽樓」寄託童年感傷？→ 錯誤</b><br>「浮光躍金，靜影沉璧」是〈岳陽樓記〉中的景色描寫，李穡說「中歲始知真樂處，躍金沉璧岳陽樓」，是說<b>中年才真正體會到岳陽樓景色之樂</b>，是對「人生感悟」的讚歎，而非寄託「童年逝去的感傷」。<br><br><b>②「真黃花對偽淵明」自比偽淵明？→ 正確</b><br>「偶向東籬羞滿面，真黃花對偽淵明」——菊花是真的（大自然），但詩人自我批判：自己雖身處田園，卻不能真正達到陶淵明悠然自得的境界，以「偽淵明」自我嘲諷，表達身在田園但心難悠然的<b>慨嘆</b>。`,
+keypoint:`<b>典故運用判斷：</b>①的關鍵在「中歲始知」——是年歲漸長後的頓悟，不是童年感傷；②「偽淵明」是自謙自嘲，表達未能達到陶淵明境界的遺憾。`,
+wrong:`<b>常見錯誤：</b>選(A)認為①正確。「躍金沉璧」是景色描寫，詩人說中年才懂得欣賞，而非感傷童年，兩者無關。`,
+texts:['古文典故','文學常識','閱讀理解']},
+
+{n:27,ans:'C',diff:'medium',
+preview:`27. 上列資料中的詞語解釋，何者最適當？<div class="options"><div class="opt">(A) 金九容詩中的「東歸」，意指奉派出使中國</div><div class="opt">(B) 鄭道傳文中的「二樂」，意指先天下之樂、後天下之樂</div><div class="opt correct">(C) 權近讚許友人有心繫群眾的胸懷，故云「推其憂於息波」</div><div class="opt">(D) 姜弘重自慚韓國文人才士不足，恐將淪為「蠻邦鄙野之地」</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>權近說友人建亭之後「推其憂於息波」，連結上文「嘗慕范文正公先天下之憂而憂……」，意為友人將對百姓的憂慮轉化為實際行動（修亭息波浪），展現憂樂不繫一己的胸懷，符合讚許。<br><br><b style="color:var(--red)">✘ (A)：</b>金九容1384年出使明朝（是去中國），「東歸」應是指<b>回到東方的韓國</b>（韓國在中國之東）。<br><b style="color:var(--red)">✘ (B)：</b>鄭道傳的〈二樂亭記〉說「仁者樂山、智者樂水」（《論語》），二樂指仁者之樂與智者之樂，並非范仲淹的先後天下之樂。<br><b style="color:var(--red)">✘ (D)：</b>姜弘重說「惜乎在蠻邦鄙野之地，不使文人才士品題」，是惋惜<b>日本草津</b>這個地方沒有文人雅士來品評這美景，並非自慚韓國。`,
+keypoint:`<b>詞語理解：</b>「東歸」的「東」是相對方位（韓國在中國之東）；「二樂」需查明是指〈二樂亭記〉的山水之樂，而非岳陽樓記的憂樂觀。`,
+wrong:`<b>常見錯誤：</b>選(B)，看到〈二樂亭記〉和范仲淹同時出現，誤以為「二樂」就是范仲淹的先後天下之樂，但鄭道傳的「二樂」另有所指（仁者智者）。`,
+texts:['古文翻譯','文化常識','閱讀理解']},
+
+{n:28,ans:'B',diff:'medium',
+preview:`28. 若依上文標記右圖，何者正確？<div style="text-align:center;margin:10px 0;"><img src="28.png" alt="第28題地圖" style="max-width:100%;max-height:360px;border-radius:8px;border:1px solid var(--border);"></div><div class="options"><div class="opt">(A) ①是圍網漁船作業區</div><div class="opt correct">(B) ②是鮪延繩釣船、圍網漁船作業區</div><div class="opt">(C) ③是魷秋漁船作業區</div><div class="opt">(D) ④是西南大西洋魷秋漁船的返臺航向</div></div>`,
+explain:`<b style="color:var(--green)">✔ (B) 正確：</b>圍網漁船在「太平洋溫暖的低緯度區」作業，地圖②位於赤道附近的中西太平洋，符合描述。同時鮪延繩釣船遍布三大洋（包含太平洋），故②也是延繩釣作業區。<br><br><b style="color:var(--red)">✘ (A)：</b>①位於西北太平洋，是魷秋漁船<b>下半年</b>捕秋刀魚的作業區，非圍網漁船。<br><b style="color:var(--red)">✘ (C)：</b>③位於印度洋，文本說魷秋漁船「先西經新加坡，繞過南非」前往大西洋，③是途經路線而非固定作業區。<br><b style="color:var(--red)">✘ (D)：</b>④在地圖上指向西南大西洋（南美洲附近），是魷秋漁船「上半年」的<b>目的地</b>，不是返臺航向（返臺是原路返回，由④→③方向）。`,
+keypoint:`<b>地圖判讀：</b>圍網漁船作業區→太平洋低緯度（赤道附近）；魷秋漁船：上半年→西南大西洋（④），下半年→西北太平洋（①），途徑→印度洋（③）。`,
+wrong:`<b>常見錯誤：</b>選(A)，「西北太平洋」聽起來也是太平洋，但圍網漁船在「低緯度區」（赤道附近），西北太平洋偏高緯度，位置不符。`,
+texts:['閱讀理解','圖文整合','地理知識']},
+
+{n:29,ans:'C',diff:'medium',
+preview:`29. 依據上文，關於臺灣遠洋漁業的敘述，何者正確？<div class="options"><div class="opt">(A) 鮪延繩釣船數量多，作業區離臺灣近；圍網漁船數量少，作業區離臺灣遠</div><div class="opt">(B) 僅花十年時間便成功拓展歐美市場，並將多數鮪延繩釣船改裝為圍網漁船</div><div class="opt correct">(C) 魷秋漁船不僅藉由掌握魚種習性而增加漁獲量，保鮮設備也有助漁獲供給</div><div class="opt">(D) 為因應全球漁業管理規範，政府已透過減船計畫來追求總漁獲量持續提升</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>文中說魷魚、秋刀魚皆有「趨光性」，漁具高度相似，掌握習性增加漁獲；臺灣漁船「能立即做分級包裝與冷凍，故比日本近海小型釣船的漁獲物更新鮮」——保鮮設備確實有助漁獲供給。<br><br><b style="color:var(--red)">✘ (A)：</b>延繩釣船遍布三大洋，並非「離臺灣近」。<br><b style="color:var(--red)">✘ (B)：</b>文中說「80年代是大航海時代」，並非只花「十年」；且船東是將賺到的「大量美元，<b>投資到</b>圍網漁船」，並非「改裝」延繩釣船。<br><b style="color:var(--red)">✘ (D)：</b>減船計畫的目標是「<b>不再</b>是追求產量的成長」，即追求永續而非增產，與(D)說的「持續提升」相反。`,
+keypoint:`<b>細節辨析：</b>(B)的陷阱是「投資新建圍網船」≠「改裝舊延繩釣船」；(D)的陷阱是「維持現有漁撈機會」≠「持續提升產量」。`,
+wrong:`<b>常見錯誤：</b>選(B)，看到「80年代拓展歐美」就估算「十年」，但文中並未說幾年，且「改裝」與「投資購買」是完全不同的概念。`,
+texts:['閱讀理解','現代議題']},
+
+{n:30,ans:'D',diff:'hard',
+preview:`30. 下列藉甲圖、乙表以佐證上文的想法，何者明顯不適當？<div class="options"><div class="opt">(A) 比較甲圖遠洋/養殖/沿近海漁業產量，可佐證「遠洋漁業是臺灣漁業的重心」</div><div class="opt">(B) 將乙表鮪延繩釣、鰹鮪圍網的產量對照兩種船隻數，可佐證「圍網漁船捕撈效能高」</div><div class="opt">(C) 乙表鮪延繩釣漁業產量數據，可佐證「鮪延繩釣船年平均漁獲量約15萬公噸」</div><div class="opt correct">(D) 乙表秋刀魚棒受網漁業的產量數據，可佐證「秋刀魚漁獲量全球第一」</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) 最不適當：</b>乙表只有「臺灣」自己的秋刀魚產量（3.40～5.02萬公噸）。要佐證「全球第一」，需要各國的產量比較資料。單憑臺灣自己的數據，無法判斷是否全球第一。這是「單一數據無法推導排序」的邏輯陷阱。<br><br><b style="color:var(--red)">✘ (A)(B)(C) 皆適當：</b>(A)甲圖可比較三類漁業高低；(B)28艘圍網船產量與948艘延繩釣船相近甚至更高，可佐證效能；(C)乙表三年平均約15萬，與文本數字吻合。`,
+keypoint:`<b>圖表邏輯判斷：</b>「佐證全球第一」需要有其他國家的對照數據，僅有臺灣自身數據是不充分的證據。這是統計推論的基本邏輯。`,
+wrong:`<b>常見錯誤：</b>選不出(D)，以為只要表格有秋刀魚數據就能佐證全球第一，忽略了「第一」是相對排名，需要比較才能得出。`,
+texts:['閱讀理解','圖文整合','邏輯分析']},
+
+{n:31,ans:'D',diff:'medium',
+preview:`31. 依據上文，關於蘭芳公司的敘述，何者正確？<div class="options"><div class="opt">(A) 羅芳伯聯合張阿財、江戊伯所創，總廳設於東萬律</div><div class="opt">(B) 建創時得到坤甸蘇丹、荷蘭東印度公司的共同支持</div><div class="opt">(C) 由採金業起家，是西婆羅洲第一家成立的華人公司</div><div class="opt correct">(D) 在公司首長的推選上，很注重故鄉地域和宗族背景</div></div>`,
+explain:`<b style="color:var(--green)">✔ (D) 正確：</b>文中明確說「按規矩，總廳大哥須是嘉應州人」，顯示籍貫（故鄉地域）是推選首長的重要條件，符合「注重故鄉地域」。<br><br><b style="color:var(--red)">✘ (A)：</b>羅芳伯1776年獨立拿下張阿財的礦區，1777年才創立蘭芳；江戊伯是1778年才聯合兼併，並非共同創立。<br><b style="color:var(--red)">✘ (B)：</b>「荷蘭東印度公司當時尚未插足西婆羅洲」——建立時荷蘭人還未插手，不可能支持。且最後蘭芳毀於荷蘭人。<br><b style="color:var(--red)">✘ (C)：</b>文中並未說蘭芳是「第一家」，且坤甸地區早有潮州人公司，蘭芳是其中一家而非最早。`,
+keypoint:`<b>文本細節：</b>「嘉應州人」的籍貫規矩是蘭芳村社本質的重要證據，也是學者否認其為真正「共和國」的依據之一。`,
+wrong:`<b>常見錯誤：</b>選(A)，混淆「聯合兼併」與「共同創立」的時間序列。`,
+texts:['閱讀理解','歷史文化']},
+
+{n:32,ans:'A',diff:'hard',
+preview:`32. 依據上文，關於婆羅洲華人公司的敘述，何者正確？<div class="options"><div class="opt correct">(A) 有公司以兼併策略擴張，也有公司透過聯盟尋求發展</div><div class="opt">(B) 多數公司揚棄中國村社體制，改學習美國而實行民主</div><div class="opt">(C) 各公司對荷蘭東印度公司勢力西伸，皆抗拒而不屈服</div><div class="opt">(D) 其優點及成員被荷蘭東印度公司吸收，因而走向覆滅</div></div>`,
+explain:`<b style="color:var(--green)">✔ (A) 正確：</b>蘭芳「兼併茅恩多家華人公司」（兼併策略）；又「向北攻取大港、三條溝等十餘家公司……組成『和順聯盟』」（聯盟策略）。<br><br><b style="color:var(--red)">✘ (B)：</b>學者說這些公司「不脫講求地緣與宗族的村社本質」，是「有民主跡象，但不能算共和國」，並非「揚棄」村社體制。<br><b style="color:var(--red)">✘ (C)：</b>蘭芳「因妥協而獨立性漸失」，並非全部皆抗拒不屈服。<br><b style="color:var(--red)">✘ (D)：</b>「大港公司因與荷蘭東印度公司對抗而於1854年遭踏平」「蘭芳在1884年毀於荷蘭人的進逼」——是被武力摧毀，並非被「吸收」。`,
+keypoint:`<b>多策略辨析：</b>蘭芳用了兼併和聯盟兩種策略，覆滅是被武力擊敗而非被吸收。`,
+wrong:`<b>常見錯誤：</b>選(D)，以為被荷蘭東印度公司「吸收」，但文中說的是荷蘭人用武力「踏平」「進逼」，性質完全不同。`,
+texts:['閱讀理解','歷史文化']},
+
+{n:33,ans:'A',diff:'hard',
+preview:`33. 蘭芳公司的某些情況，常成為「婆羅洲華人公司是否為共和國」的論證事例。依據上文，不同觀點的言論最可能以①②③何者為支持事例？<div style="font-size:0.85em;background:var(--warm);padding:8px;border-radius:6px;margin:8px 0;">①總廳大哥的資格有籍貫限制<br>②總廳大哥須經由推舉程序產生<br>③總廳大哥頭銜改為「蘭芳大總制甲太」</div><div class="options"><div class="opt correct">(A) 主張共和國→② ／ 不同意共和國→①</div><div class="opt">(B) 主張共和國→② ／ 不同意共和國→③</div><div class="opt">(C) 主張共和國→③ ／ 不同意共和國→①</div><div class="opt">(D) 主張共和國→③ ／ 不同意共和國→②</div></div>`,
+explain:`<b>主張共和國→②推舉程序：</b>現代共和國的精神是選賢與能，經由推舉（選舉）產生領導者，符合「事務共決」的民主體制，可作為「是共和國」的證據。<br><br><b>不同意共和國→①籍貫限制：</b>總廳大哥須是嘉應州人，這是地緣宗族的限制，正符合學者說的「不脫村社本質，核心是伙伴關係而非民權主義」，可作為「非共和國」的反駁證據。<br><br>③「頭銜改為蘭芳大總制甲太」是荷蘭授予的職銜，說明蘭芳因妥協而失去獨立性，與共和國性質的討論較無直接關係。`,
+keypoint:`<b>論證事例配對：</b>「推舉＝民主精神」支持共和；「籍貫限制＝宗族村社」反對共和。這是文中兩派學者立場的核心差異。`,
+wrong:`<b>常見錯誤：</b>選(B)，以③（頭銜改為甲太）作為反對依據，但甲太是荷蘭授予的妥協結果，說明的是喪失獨立性而非否定共和體制。`,
+texts:['閱讀理解','邏輯分析','歷史文化']},
+
+{n:34,ans:'A',diff:'medium',
+preview:`34. 某篇敘述蘭芳公司歷史的文章說：「羅芳伯未號稱『大唐總長』，也未以『蘭芳』紀元」。依據上文，可推知其採用文獻的作法及理由為何？<div class="options"><div class="opt correct">(A) 取時代早的記載：或許較接近當時事實</div><div class="opt">(B) 取時代晚的記載：提出較新的考證方法</div><div class="opt">(C) 取荷蘭官方的記載：看華人公司較客觀</div><div class="opt">(D) 取客家人立場的記載：寫當事人較深入</div></div>`,
+explain:`文中提到「大唐總長」「蘭芳元年」的說法來自1912年林鳳超《坤甸歷史》，被羅香林1961年引用；但寫於<b>1856年</b>的《蘭芳公司歷代年冊》「對此隻字未提」。<br><br>若某文章說「未號稱大唐總長，也未以蘭芳紀元」，代表它採用了1856年的舊年冊而非1912/1961年的記載，因為舊年冊沒有這些說法。<br><br>理由：<b>時代越早，越接近當時事實</b>，受後代民族情感渲染較少。這符合史學「取原始文獻（1856）優先於後世二手著作（1912/1961）」的原則。`,
+keypoint:`<b>文獻學原則：</b>「離事件年代越近的記載，真實性通常越高」是史學基本常識。後世著作（如1961年）可能有民族情感或政治目的的加工。`,
+wrong:`<b>常見錯誤：</b>選(D)，《蘭芳公司歷代年冊》作者是末代甲太的女婿（客家人立場），但文中說取舊記載是因為「接近事實」而非立場問題。`,
+texts:['閱讀理解','歷史文化','文獻辨析']},
+
+{n:35,ans:'B',diff:'hard',
+preview:`35. 《海錄》書中關於羅芳伯的記載，①～⑤的解釋，何者符合上文？<div style="background:var(--warm);padding:10px;border-radius:6px;font-size:0.85em;margin:8px 0;line-height:1.8;">乾隆中，有粵人羅芳伯者貿易於①此，豪俠善技擊，頗得②眾心。時土番竊發，③商賈不安，芳伯屢率眾平④之。……尊為⑤客長。</div><div style="font-size:0.85em;background:#f0f8ff;padding:8px;border-radius:6px;margin:8px 0;">①指坤甸東萬律一帶　②指客家人　③指荷蘭東印度公司　④指達雅人　⑤指蘭芳大總制</div><div class="options"><div class="opt">(A) ①②③</div><div class="opt correct">(B) ①②④</div><div class="opt">(C) ②③⑤</div><div class="opt">(D) ③④⑤</div></div>`,
+explain:`<b>逐一辨析：</b><br>①「貿易於此」→ 上文說羅芳伯抵達坤甸，轉往東萬律，「此」指坤甸、東萬律一帶，<b>正確</b>。<br>②「頗得眾心」→ 上文說他招攬「坤甸附近的客家人投靠」，眾指客家鄉親，<b>正確</b>。<br>③「商賈不安」→「商賈」泛指商人（華人商人），並非荷蘭東印度公司，且「荷蘭東印度公司當時尚未插足西婆羅洲」，<b>錯誤</b>。<br>④「芳伯屢率眾平之」→「之」指「土番竊發」的騷亂，土番即達雅人（原住民），<b>正確</b>。<br>⑤「尊為客長」→「客長」是客家人首領的意思，並非「蘭芳大總制」（那是1824年荷蘭授予的職銜，遠在此事之後），<b>錯誤</b>。`,
+keypoint:`<b>字詞解釋配對：</b>「商賈」在古文中泛指商人，不特指洋人；「客長」是客家話「客人的頭領」，與「蘭芳大總制甲太」是不同時期不同性質的頭銜。`,
+wrong:`<b>常見錯誤：</b>選(A)認為③正確，誤以為「商賈不安」的商人是荷蘭人，但荷蘭人當時根本還沒來這裡（文中明說「尚未插足」）。`,
+texts:['古文翻譯','歷史文化','閱讀理解']},
+
+{n:36,ans:'A',diff:'medium',
+preview:`36. 依據上文，關於全日物流的敘述，何者正確？<div class="options"><div class="opt correct">(A) 以配送次數密集且覆蓋率高領先同業</div><div class="opt">(B) 將自製冷凍生鮮品透過拉亞漢堡銷售</div><div class="opt">(C) 因蔬果運送成本低而投入蔬果供應鏈</div><div class="opt">(D) 主動協助零售業者建立自有冷鏈系統</div></div>`,
+explain:`<b style="color:var(--green)">✔ (A) 正確：</b>文中說蔬果「保鮮期短，不同蔬果適合溫度不同，因此既需要大量車隊<b>頻繁配送</b>，又要顧及各店家的所在地與營業時間」，形成密集配送的競爭門檻，13座物流中心、420輛低溫車是覆蓋率高的體現。<br><br><b style="color:var(--red)">✘ (B)：</b>全日是「冷鏈服務商」，為拉亞漢堡提供物流配送服務，並非銷售自製產品。<br><b style="color:var(--red)">✘ (C)：</b>文中說蔬果物流「複雜精密」，並非因為成本低才投入，而是因為發現商機與競爭需要。<br><b style="color:var(--red)">✘ (D)：</b>統一、全聯是「自行建立冷鏈」，成為全日的競爭對手，並非全日協助其建立。`,
+keypoint:`<b>細節辨析：</b>全日的核心競爭力是「密集配送」，靠頻率和覆蓋率建立門檻，這與高投入成本有關，而非低成本優勢。`,
+wrong:`<b>常見錯誤：</b>選(C)，以為投入蔬果物流是因為低成本，但文中說蔬果物流極為複雜，成本並不低。`,
+texts:['閱讀理解','現代議題']},
+
+{n:37,ans:'B',diff:'medium',
+preview:`37. 依據上文，全日物流為了向餐飲業者提供蔬果鏈，在本業外增加的項目為何？<div style="text-align:center;margin:10px 0;"><img src="37.png" alt="第37題選項圖示" style="max-width:100%;max-height:360px;border-radius:8px;border:1px solid var(--border);"></div>`,
+explain:`文中說全日在原有「最後一哩路」（物流管理）外，新增「第一哩路」：「在採收前後與<b>農戶</b>（田間管理）、<b>蔬果裁切包裝業者</b>合作」。<br><br><b style="color:var(--green)">✔ (B) 正確：</b>田間管理（與農戶合作）＋裁切包裝（與包裝業者合作），都是本業（物流）以外新增的項目。<br><b style="color:var(--red)">✘ (A)(C)：</b>物流管理是全日的本業，不是新增的。<br><b style="color:var(--red)">✘ (D)：</b>全日服務的是餐飲業者，文中未提配送個人。`,
+keypoint:`<b>關鍵詞定位：</b>「在本業（最後一哩路）外增加」→ 找第一哩路的內容：「採收前後與農戶、蔬果裁切包裝業者合作」對應圖示中的田間管理與裁切包裝。`,
+wrong:`<b>常見錯誤：</b>選(A)(C)把「物流管理」誤當新增項目，但物流本就是全日原有的本業。`,
+texts:['閱讀理解','現代議題']},
+
+{n:38,ans:'C',diff:'medium',
+preview:`38. 關於上文寫作手法與意義，何者敘述最適當？<div class="options"><div class="opt">(A) 以「13座物流中心、420輛低溫車」為例，說明迎戰客戶變強敵的創新作法</div><div class="opt">(B) 以「日本最大蔬果供應商Farmind」為對比，說明蔬果冷鏈技術已超越日本</div><div class="opt correct">(C) 以「最後一哩路、第一哩路」，說明藉原有優勢發展更完整的蔬果冷鏈服務</div><div class="opt">(D) 以「讓鳳梨成功進入日本好市多、7-Eleven」，說明已成為跨國零售業巨頭</div></div>`,
+explain:`<b style="color:var(--green)">✔ (C) 正確：</b>文章以「最後一哩路」（原有物流管理）vs「第一哩路」（新增田間與包裝合作）的對比架構，清晰說明全日如何延伸既有冷鏈優勢，打造更完整的蔬果供應鏈，這正是全文的核心論點。<br><br><b style="color:var(--red)">✘ (A)：</b>13座中心、420輛車說明的是「既有優勢的規模」，而非「創新作法」。<br><b style="color:var(--red)">✘ (B)：</b>Farmind是合作夥伴（找到突圍關鍵），並非用來對比「超越日本」。<br><b style="color:var(--red)">✘ (D)：</b>鳳梨進入好市多是供應鏈成功的結果，並非說明全日成為「零售業巨頭」（全日是服務商，不是零售商）。`,
+keypoint:`<b>寫作架構分析：</b>全文以「最後一哩路→第一哩路」的延伸邏輯為骨架，說明企業如何利用既有優勢（不是從零開始）建立更完整的服務。`,
+wrong:`<b>常見錯誤：</b>選(D)，看到鳳梨進入好市多，想到跨國品牌，但全日的角色是供應商而非零售商，「零售業巨頭」的說法明顯錯位。`,
+texts:['閱讀理解','寫作手法','現代議題']}
+];
+
+const passagesData = {
+  'p11-15': {
+    title: '📖 閱讀一：賴和〈一桿稱仔〉〈不如意的過年〉（第 11–15 題）',
+    content: `<p><b>【甲】節錄自賴和〈一桿稱仔〉</b></p>
+<p>「花菜賣多少錢？」巡警問。</p>
+<p>「大人要的，①<u>不用問價；肯要我的東西，就算運氣好。</u>」參說。他就擇幾莖好的，用稻草貫著，恭敬地獻給他。</p>
+<p>②<u>「不，稱稱看！」巡警幾番推辭著說，</u>誠實的參，亦就掛上稱仔稱一稱，說：「大人，真客氣啦！才一斤十四兩。」本來，經過秤稱過，就算買賣，就是有錢的交關，不是白要，亦不能說是贈與。</p>
+<p>「不錯罷？」巡警說。</p>
+<p>「不錯，本來兩斤足，因是大人要的……」參說。</p>
+<p>「稱仔不好罷，兩斤就兩斤，何須打扣？」巡警變色地說。</p>
+<p>「不，還新新呢！」參泰然地回答。</p>
+<p>「拿過來！」巡警赫怒了。</p>
+<p>「稱花還很明瞭。」參從容地捧過去說。巡警接在手裡，約略考察一下，說：「不堪用了，拿到警署去！」</p>
+<p>「什麼緣故？修理不可嗎？」參說</p>
+<p>「不去嗎？」巡警怒叱著。「不去？畜生！」撲的一聲，巡警把稱仔打斷擲棄，隨抽出胸前的小帳子，把參的名姓、住處記下，氣憤憤地回警署去。</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:16px 0;">
+<p><b>【乙】改寫自賴和〈不如意的過年〉</b></p>
+<p>查大人聽人們騷動的聲，已明白近處有犯法的事故。可是待他趕到現場人已走空，只剩下幾個兒童欣羨似地立在那邊，注視著來不及收，遺下的銅貨銀鈸和賭具。查大人捉不到犯人，隨便拉一個兒童，玩笑似地問：「喂！囝仔，什麼人賭錢的？」查大人的威聲，本可喝止夜啼的孩子，那個兒童不明白地被他拉住，當然吃不少驚，然後啼哭了起來。不幸這個兒童，竟遇到這厭惡哭聲的查大人。他常說：③<u>啼哭是弱者的呼喊，無用者的祈求，頂卑劣的舉動，有污辱人的資格，尤其是一等國民的面子。</u>所以他就用教訓的意義，輕輕地打他一掌說：「緘點著！不許哭，賭錢的什麼人？」很有效力，這一下子打，那兒童立刻止住哭聲，偷偷地用手來摩擦著印有指痕紅腫的嘴巴。</p>
+<p>「不說嗎？到衙門去！」</p>
+<p>有一位似較有膽量的人，走向前去：「大人！賭錢，他不……」</p>
+<p>「豬！誰要你插嘴？」</p>
+<p>唉！本來可以無事的那個兒童，④<u>被人們的同情心，拖累得更不幸了。</u>在查大人的思想，官事一點也不容許人民過問，他本無為難這兒童的意志。但到現在就不能隨便了事，怕被世間誤解，以為受到抗議才釋放他。這很關礙做官的尊嚴。做官的不會錯，現在已經成為定理。那個兒童總須有些事實，以表明他罪有應得，要他供出事實來，就須拉進衙門審問。這是法律所給的職權。</p>
+<p style="font-size:12px;color:var(--muted);">查大人：日治時代臺灣人對日本警察的稱呼，意同巡警。</p>`
+  },
+  'p16-19': {
+    title: '📖 閱讀二：古代燈具設計（第 16–19 題）',
+    content: `<div style="text-align:center;margin:0 0 16px;"><img src="16-19.png" alt="三種古代燈具圖示" style="max-width:100%;border-radius:8px;border:1px solid var(--border);"></div><p><b>【長信宮燈】</b><br>我是兩千多年前的漢代燈，高48公分，重約16公斤，表面塗金。我左手托燈盤，右手提燈罩，中空的右臂是導煙管。油脂在燈盤點燃後，燈罩的兩片板子可調節光的亮度與方向，油煙則順著右臂進到底座。底座的開口除了能促進氣流，加速散熱，也能盡量不讓廢氣四處擴散。油燈在商、周時代就有了，漢代民間普遍用陶製的燈。我這樣的青銅燈十分貴重，王侯之家才用得起哩！</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>【夾燈盞】</b><br>貴重？是沉重吧！在宋代，很多像我這種高5公分、直徑11公分的小燈，單手就能輕鬆移動，也便於放在高約20公分的燈架上使用。長信宮燈材質容易導熱，油會燒得很快。我不但是瓷製的，而且有一體成型的上下兩層，上層盛油，下層則從側邊小孔注水，幫助燃油降溫，延長燃燒時間。正因我是省油神器，宋代詩人陸游一直幫我宣傳。但他說我能省油50%，有點誇張，據後人實驗，應該只省10%左右，而且要夏天才有這水準。此外，也不是夾層水多就省油效果強，所以燈盞也不用大。宋代蠟燭的價格是植物油的數十倍，所以我是許多人夜間讀書的良伴。長信宮燈常以動物油脂當燃料，煙多又難聞，我沒這問題唷！</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>【銅牛燈】</b><br>用不著比較吧！我也是漢代的燈，高46公分，也有燈罩和導煙管，但我腹部能裝水，既有助燈體降溫，還能吸附煙中的汙染物。豪門講排場，燈具自然得相應。例如我跟長信宮燈體型大，都由幾個部件組裝而成，以便拆卸清潔。又如燈盤都有針錐，以便呈固態的昂貴動物油脂插在上面，植物油為液態，不必注意這點。漢代人席地而坐，頭距地面約100公分，桌高約40公分，我跟長信宮燈無論放地上或桌上，都能讓視線落在宜於閱讀的俯角20°～70°。宋代人是坐椅子上，桌高約75公分，小燈才方便從桌面移上燈架，調整照明範圍。直到今天，燈具依然會配合家具，用起來才舒服。</p>
+<p style="font-size:12px;color:var(--muted);">圖示：長信宮燈（ㄅ=右臂導煙管出口，ㄆ=底座進口）；夾燈盞（ㄈ=下層側邊注水小孔，ㄇ=上層盛油處）；銅牛燈（ㄊ=燈罩，ㄉ=燈盤/放油處）</p>`
+  },
+  'p20-23': {
+    title: '📖 閱讀三：沈起鳳〈壯夫縛虎〉（第 20–23 題）',
+    content: `<p>沂州山峻險，故多猛虎，邑宰時令獵戶捕之，往往反為所噬。有焦奇者，陝人，投親不值，流寓於沂。素神勇，曾挾千佛寺前石鼎，飛騰大雄殿左脊，故人呼為焦石鼎云。知沂嶺多虎，日徒步入山，遇虎輒手格斃之，負以歸，如是為常。</p>
+<p>一日入山，遇兩虎帥一小虎至。焦性起，連斃兩虎，左右肩負之，而以小虎生擒而返。眾皆辟易，焦笑語自若。富家某，欽其勇，設筵款之。焦於座上，自述其平昔縛虎狀，聽者俱色變。而焦益張大其詞，口講指畫，意氣自豪。</p>
+<p>倏有一貓，登筵攫食，腥汁淋漓滿座上，焦以為主人之貓也，聽其大嚼而去。主人曰：「鄰家孽畜，可厭乃爾！」亡何，貓又來。焦急起奮拳擊之，座上肴核盡傾碎，而貓已躍伏窗隅。焦怒，又逐擊之，窗櫺盡裂，貓一躍登屋角，目耽耽視焦。焦愈怒，張臂作擒縛狀，而貓嗥然一聲，曳尾徐步，過鄰牆而去，焦計無所施，面牆呆望而已。主人撫掌笑，焦大慚而退。</p>
+<p style="font-size:12px;color:var(--muted);">（沈起鳳〈壯夫縛虎〉）</p>`
+  },
+  'p24-27': {
+    title: '📖 閱讀四：韓國士大夫筆下的岳陽樓（第 24–27 題）',
+    content: `<p style="font-size:12px;color:var(--muted);margin-bottom:12px;">古代韓國在1443年創造了適合標記韓語語音的「諺文」。在此之前，士大夫皆閱讀並書寫漢文。</p>
+<p><b>金九容（1338～1384）</b>，1384年出使明朝，後流放雲南，卒於途中。曾作〈岳陽樓〉詩：<br>「舟中遙望岳陽樓，未得登臨作勝遊。何日東歸重過此，倚欄吟賞洞庭秋。」</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>鄭道傳（1342～1398）</b>，與權近皆師承高麗王朝大儒李穡。曾與友人同遊漢陽二樂亭，作記云：「二樂亭，乃義安伯別墅也……諸山端重，如仁者以靜自守；江水通注，如智者動而不括；宜君子所當樂也……昔范文正公登岳陽樓嘆曰：『先天下之憂而憂，後天下之樂而樂』，我思古人，實獲我心。予亦以為待諸公戮力王室，底定生民，功成謝事，然後尊俎杖履，翱翔於此亭之上，恣心志之娛樂。」</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>權近（1352～1409）</b>，著有《五經淺見錄》，曾兩度出使明朝。友人在松都渡口旁山崖修建一亭，名曰「息波」，他作記云：「（公）嘗慕范文正公『先天下之憂而憂，後天下之樂而樂』之語……夫岳陽樓，天下之勝，概凡寓目者，可悲可娛，皆繫所感，而范公憂樂則獨關於天下。今公於此亭，既得以與人同其樂，且推其憂於息波，是其心之憂樂，皆在於及人而不繫於一己者可見矣。」</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>姜弘重（1577～1642）</b>，1624年出使日本，途經草津湖景，寫道：「洞庭之岳陽，雖未曾目見，景致之勝絕，氣勢之雄壯，想未必過於此矣。惜乎在蠻邦鄙野之地，不使文人才士品題於其間也。」</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>李穡二詩：</b><br>〈詠月〉：憶年八九學堂遊，似鏡如鉤誦不休。中歲始知真樂處，躍金沉璧岳陽樓。<br>〈對菊有感〉：人情那似物無情，觸境年來漸不平。偶向東籬羞滿面，真黃花對偽淵明。</p>`
+  },
+  'p28-30': {
+    title: '📖 閱讀五：臺灣遠洋漁業（第 28–30 題）',
+    content: `<p>1950年代向日本取得漁撈及造船技術後，臺灣漁船便從臺灣海峽一路殺到中西太平洋。70年代起，臺灣就被國際組織列入六大公海漁撈國之一。80年代更是臺灣漁業的大航海時代：臺灣以優越的捕撈實力直接和歐美品牌商議價，走出過去由日商支配的市場。船東們也將外銷賺到的大量美元，投資到捕撈效能高於鮪延繩釣船的鰹鮪圍網漁船。</p>
+<p>遠洋漁業不僅是臺灣漁業的重心，在全球也極具競爭力。據2021年統計，秋刀魚漁獲量全球第一，鰹鮪魚、魷魚也名列前茅。至2023年，我國有鮪延繩釣船948艘，遍布太平洋、印度洋和大西洋，年平均漁獲量約15萬公噸；圍網漁船28艘，在太平洋溫暖的低緯度區捕鰹鮪魚；魷秋漁船100艘，因魷魚、秋刀魚皆有趨光性，漁具漁法高度相似，故上半年先西經新加坡，繞過南非，抵達西南大西洋捕魷魚，原路返臺後，下半年再到西北太平洋捕秋刀魚。臺灣魷秋漁船能立即做秋刀魚分級包裝與冷凍，故比日本近海小型釣船的漁獲物更新鮮，保存期更長。</p>
+<p>為避免海洋資源枯竭，全球各海域的漁業管理組織紛紛加強規範，並限制漁獲配額。面對新的挑戰，臺灣遠洋漁業正積極轉型，不再是追求產量的成長。例如政府已推動減船計畫，希望在維持現有漁撈機會的前提下集中作業能量，協助業者永續經營。</p>
+<p style="font-size:12px;color:var(--muted);">（改寫自洪綾襄〈賺遍全球的日不落帝國臺灣漁業霸主揭密〉）</p>
+<div style="text-align:center;margin:12px 0;"><img src="28.png" alt="第28題漁業作業區地圖" style="max-width:100%;border-radius:8px;border:1px solid var(--border);"></div>
+<p style="font-size:12px;background:var(--warm);padding:8px;border-radius:6px;">地圖說明：①西北太平洋（魷秋船下半年）、②中西太平洋赤道附近（圍網船）、③印度洋（魷秋船途經）、④西南大西洋（魷秋船上半年）</p>`
+  },
+  'p31-35': {
+    title: '📖 閱讀六：客家人的大伯公（蘭芳公司）（第 31–35 題）',
+    content: `<div style="float:right;margin:0 0 12px 16px;max-width:200px;"><img src="31.png" alt="婆羅洲位置圖" style="width:100%;border-radius:8px;border:1px solid var(--border);"><p style="font-size:11px;color:var(--muted);text-align:center;margin-top:4px;">婆羅洲位置圖</p></div><p>出生於1738年（乾隆3年）的羅芳伯，是廣東省嘉應州的客家人。34歲那年，他跟著貿易船出海，勇闖許多鄉親早已前往淘金的婆羅洲。航行數十天，抵達西婆羅州的坤甸。</p>
+<p>羅芳伯初以教書為業，因坤甸的潮州人公司勢力大，便轉往東萬律。1776年，他拿下張阿財經營的金礦區，仍請張阿財掌理財務，也成功吸引坤甸附近的客家人投靠。1777年，他創建「蘭芳公司」，總廳成立於東萬律。1778年，他聯合茅恩蘭和營的江戊伯，兼併茅恩多家華人公司，使該地總大哥黃桂伯歸順。1780年，他同樣以武力征服明黃採金公司，大哥劉乾相戰敗自盡。1782年，又向北攻取大港、三條溝等十餘家公司，它們大多由潮州、惠州人主持，組成「和順聯盟」，擁有可觀的金礦利益。因對手實力雄厚，羅芳伯研判不宜急圖，乃撤回東萬律。由於荷蘭東印度公司當時尚未插足西婆羅洲，蘭芳因工商業貢獻坤甸稅收，又能壓制土著達雅人，故能與坤甸蘇丹維持友好關係。</p>
+<p>1795年10月24日，眾人向病危的羅芳伯請示：「大業誰繼？公司地廣人多，不能一日無主！」「蘭芳各處頭人都是擇賢而立，總廳大哥豈能由我獨斷？」「按規矩，總廳大哥須是嘉應州人，您認為選誰好？」「江戊伯呢？你們看合適否？」羅芳伯長眠於他付出半生心血的東萬律。當年他無法入主的大港公司，因與荷蘭東印度公司對抗而於1854年遭踏平；他一手創立的蘭芳，也在1884年（光緒10年）毀於荷蘭人的進逼。</p>
+<hr style="border:none;border-top:1px dashed var(--border);margin:12px 0;">
+<p><b>公司？共和國？</b></p>
+<p>曾在荷蘭東印度公司擔任翻譯的荷蘭人高延，在1885年出版的《婆羅洲華人公司制度》以「共和國」描述華人公司，即因它們既在婆羅洲獨立自治，也沿用中國村社選賢舉能、事務共決的體制。後人甚至稱蘭芳是堪比美國的「民主國」。但也有學者認為，這些公司固然有民主跡象，但不脫講求地緣與宗族的村社本質，核心精神是伙伴關係而非民權主義，不能算共和國。</p>
+<p>羅香林1961年的《西婆羅洲羅芳伯等所建共和國考》謂羅芳伯「建元『蘭芳』，建國號曰『蘭芳大總制』，受推為『大唐總長』」，取林鳳超1912年《坤甸歷史》之說，林氏並以乾隆42年為蘭芳元年。但寫於1856年的《蘭芳公司歷代年冊》對此隻字未提，僅出現「蘭芳大總制甲太」一詞，它是荷蘭東印度公司1824年授予蘭芳大哥劉台二的職銜，蘭芳自此因妥協而獨立性漸失。</p>`
+  },
+  'p36-38': {
+    title: '📖 閱讀七：冷鏈物流全日（第 36–38 題）',
+    content: `<p>臺灣一般民眾購買蔬果時，通常優先考量外觀、無農藥殘留，不太注意是否低溫保存。但對餐飲業者而言，周延的低溫保存才能讓蔬果從農田到餐桌維持新鮮度。例如有四百多間門市的早餐業者「拉亞漢堡」，雖有車隊配送食材，但美生菜、番茄等仍得靠加盟主自行到市場採買，不僅成本高，總部也不易控管品質。於是拉亞找上冷鏈服務商「全日物流」，採購從產地低溫直送的蔬果。</p>
+<p>全日物流於2003年設立首座低溫倉庫，服務遠洋漁業客戶。2012年創業內之先，在桃園、雲林、高雄設立低溫物流中心，迄今擁有13座冷鏈物流中心，420輛低溫車，堪稱臺灣冷鏈龍頭。但這幾年，曾是客戶的零售巨頭如統一、全聯，不僅斥資建立自有的冷鏈物流，而且轉為競爭強敵。面對嚴峻的現實，全日從日本最大蔬果供應商Farmind找到突圍關鍵，就是利用既有的優勢，建立蔬果供應鏈。</p>
+<p>不同於冷凍品只要保冷，蔬果的要求是保鮮。不但保鮮期短，而且不同蔬果的適合溫度也不同，因此既需要大量車隊頻繁配送，又要顧及各店家的所在地與營業時間。全日在複雜精密的「最後一哩路」管理外，繼續納入「第一哩路」，在採收前後與農戶、蔬果裁切包裝業者合作，借重其專業。近兩年，全日也協助農戶防治鳳梨害蟲，讓鳳梨在日本港口驗出害蟲而須消毒的比率低於10%，成功進入日本好市多、7-Eleven等通路。</p>
+<p style="font-size:12px;color:var(--muted);">（改寫自游羽棠〈冷鏈物流王迎戰「客人變敵人」〉）</p>`
+  }
+};
+
+const typeMap2={'字形辨正':['字形','錯別字','字音'],'成語典故':['成語','典故','文學典故'],'古文翻譯':['古文','一字多義','虛詞','白話','課文應用'],'閱讀理解':['閱讀','文意','題組','圖文','地理','歷史','現代議題','人物'],'語氣修辭':['修辭','語氣','句式','諷刺','排列','敘寫','寫作']};
+function normalizeTypes2(texts){if(!texts)return[];const r=new Set();texts.forEach(t=>{for(const[cat,keys]of Object.entries(typeMap2)){if(keys.some(k=>t.includes(k)))r.add(cat);}});return[...r];}
+
+window.onload=()=>{
+  if(typeof qData!=='undefined'){
+    qData.forEach(q=>{if(groupMap[q.n])q.group=groupMap[q.n];q.texts=normalizeTypes2(q.texts||[]);});
+    renderQuestions('all','diff');
+  }
+};
+</script>
+</body>
+</html>
